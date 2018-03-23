@@ -8,7 +8,7 @@ service Add {
   // Sums two integers.
   rpc Sum (SumRequest) returns (SumReply) {
     option (google.api.http) = {
-			get: "/sum/{a}/{b}"
+			get: "/add/sum/{a}/{b}"
 		};
   }
 

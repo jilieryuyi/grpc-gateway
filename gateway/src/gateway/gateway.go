@@ -42,12 +42,6 @@ func main() {
 		var connects = make(map[string]*clientConn)
 		//proxy grpc server
 		g.Add(func() error {
-			//("proxy", "gRPC", "addr", "0.0.0.0:8081")
-			// we add the Go Kit gRPC Interceptor to our gRPC service as it is used by
-			// the here demonstrated zipkin tracing middleware.
-			// todo 这里需要实现一套连接池
-			//
-
 			var director = func(ctx context.Context, fullMethodName string) (context.Context, *grpc.ClientConn, error) {
 
 				// Make sure we never forward internal services.
@@ -61,7 +55,7 @@ func main() {
 				if ok {
 					// Decide on which backend to dial
 					//if val, exists := md[":authority"]; exists && val[0] == "staging.api.example.com" {
-						// Make sure we use DialContext so the dialing can be cancelled/time out together with the context.
+					// Make sure we use DialContext so the dialing can be cancelled/time out together with the context.
 
 					cl, ok := connects[echoEndpoint]
 					if ok {
@@ -69,12 +63,12 @@ func main() {
 						return outCtx, cl.client, nil
 					}
 
-						fmt.Println("new client")
-						conn, err := grpc.DialContext(ctx, echoEndpoint, grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proxy.Codec())), grpc.WithInsecure())//grpc.WithCodec(Codec()))
+					fmt.Println("new client")
+					conn, err := grpc.DialContext(ctx, echoEndpoint, grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proxy.Codec())), grpc.WithInsecure())//grpc.WithCodec(Codec()))
 					connects[echoEndpoint] = &clientConn{
 						client:conn,
 					}
-						return outCtx, conn, err
+					return outCtx, conn, err
 					//} else if val, exists := md[":authority"]; exists && val[0] == "api.example.com" {
 					//	conn, err := grpc.DialContext(ctx, "api-service.prod.svc.local", grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proxy.Codec())))//grpc.WithCodec(Codec()))
 					//	return outCtx, conn, err
@@ -91,22 +85,6 @@ func main() {
 			lis.Close()
 		})
 	}
-	//{
-	//	// This function just sits and waits for ctrl-C.
-	//	cancelInterrupt := make(chan struct{})
-	//	g.Add(func() error {
-	//		c := make(chan os.Signal, 1)
-	//		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
-	//		select {
-	//		case sig := <-c:
-	//			return fmt.Errorf("received signal %s", sig)
-	//		case <-cancelInterrupt:
-	//			return nil
-	//		}
-	//	}, func(error) {
-	//		close(cancelInterrupt)
-	//	})
-	//}
 
 	{
 		// http协议转grpc协议服务
@@ -115,7 +93,6 @@ func main() {
 		// routes, and so on.
 		debugListener, err := net.Listen("tcp", ":8083")
 		if err != nil {
-			//logger.Log("transport", "debug/HTTP", "during", "Listen", "err", err)
 			os.Exit(1)
 		}
 
@@ -130,21 +107,11 @@ func main() {
 			fmt.Printf("%v\n", err)
 			return
 		}
-
-		//return http.ListenAndServe(":8083", mux)
-
-
 		g.Add(func() error {
-			//logger.Log("transport", "debug/HTTP", "addr", debugAddr)
 			return http.Serve(debugListener, mux)
 		}, func(error) {
 			debugListener.Close()
 		})
 	}
-
 	g.Run()
-
-	//if err := run(); err != nil {
-	//	glog.Fatal(err)
-	//}
 }

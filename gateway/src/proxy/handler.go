@@ -62,7 +62,7 @@ type handler struct {
 // forwarding it to a ClientStream established against the relevant ClientConn.
 func (s *handler) handler(srv interface{}, serverStream grpc.ServerStream) error {
 	// little bit of gRPC internals never hurt anyone
-	type streamKey struct{}
+	//type streamKey struct{}
 	//fmt.Printf("%+v\n", serverStream.Context())
 
 	//lowLevelServerStream, ok := serverStream.Context().Value(streamKey{}).(*transport.Stream)
