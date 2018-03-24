@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36284916-c978-43a6-bd60-8522ac4cd089" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/gateway/client_test.go" afterPath="$PROJECT_DIR$/grpc/client.go" />
-      <change beforePath="$PROJECT_DIR$/gateway/service/consul.go" afterPath="$PROJECT_DIR$/service/consul.go" />
-      <change beforePath="$PROJECT_DIR$/server/client.go" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/server/src/pb/addsvc.pb.go" afterPath="$PROJECT_DIR$/proto/addsvc.pb.go" />
-      <change beforePath="$PROJECT_DIR$/server/src/pb/addsvc.pb.gw.go" afterPath="$PROJECT_DIR$/proto/addsvc.pb.gw.go" />
-      <change beforePath="$PROJECT_DIR$/server/src/pb/addsvc.proto" afterPath="$PROJECT_DIR$/proto/addsvc.proto" />
-      <change beforePath="$PROJECT_DIR$/server/src/pb/addsvc.proto1" afterPath="$PROJECT_DIR$/proto/addsvc.proto1" />
-      <change beforePath="$PROJECT_DIR$/server/src/pb/compile.sh" afterPath="$PROJECT_DIR$/proto/compile.sh" />
-      <change beforePath="$PROJECT_DIR$/server/src/service/consul.go" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -93,8 +84,8 @@
         <entry file="file://$PROJECT_DIR$/readme.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="0">
-                <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <first_editor relative-caret-position="198">
+                <caret line="9" column="19" lean-forward="true" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
                 <folding />
               </first_editor>
               <second_editor>
@@ -230,6 +221,7 @@
         <option value="$PROJECT_DIR$/client/readme.md" />
         <option value="$PROJECT_DIR$/grpc/readme.md" />
         <option value="$PROJECT_DIR$/gateway/readme.md" />
+        <option value="$PROJECT_DIR$/readme.md" />
       </list>
     </option>
   </component>
@@ -717,7 +709,7 @@
         <state relative-caret-position="-1071">
           <caret line="112" column="24" lean-forward="false" selection-start-line="112" selection-start-column="24" selection-end-line="112" selection-end-column="24" />
           <folding>
-            <element signature="e#14#896#0" expanded="true" />
+            <element signature="e#14#896#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -832,8 +824,8 @@
     <entry file="file://$PROJECT_DIR$/readme.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="0">
-            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <first_editor relative-caret-position="198">
+            <caret line="9" column="19" lean-forward="true" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
             <folding />
           </first_editor>
           <second_editor>
