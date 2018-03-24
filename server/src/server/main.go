@@ -26,16 +26,12 @@ import (
 	"pkg/addendpoint"
 	"pkg/addservice"
 	"pkg/addtransport"
-	//"encoding/json"
-	//"github.com/golang/protobuf/proto"
 
-	//"math"
 	"google.golang.org/grpc/encoding"
 	eproto "google.golang.org/grpc/encoding/proto"
 
-	//"bytes"
 	"encoding/json"
-	"service"
+	"github.com/jilieryuyi/grpc-gateway/service"
 )
 
 
@@ -106,16 +102,17 @@ func main() {
 	grpcListenPort := 8082 //grpc监听端口
 	grpcServiceIp := "127.0.0.1" //grpc通过这个ip对外服务，可以自由配置外网内网，配合监听ip使用
 	serviceName := "service.add"
+	consulAddress := "127.0.0.1:8500"
 
 
 	//这是一个服务
 	//将被注册到consul
-	sev := service.NewService(grpcListenIp, grpcListenPort, grpcServiceIp, serviceName)
+	sev := service.NewService(grpcListenIp, grpcListenPort,
+		grpcServiceIp, serviceName, consulAddress)
 	sev.Register()
 
 	debugAddr      := "0.0.0.0:8080"
 	//grpc服务接听
-	grpcAddr       := "0.0.0.0:8082"
 	//分布式链路追踪
 	zipkinV2URL    := "http://localhost:9411/api/v2/spans"
 	zipkinV1URL    := "http://localhost:9411/api/v1/spans"
@@ -141,7 +138,7 @@ func main() {
 			defer collector.Close()
 			var (
 				debug       = false
-				hostPort    = grpcAddr//"localhost:80"
+				hostPort    = fmt.Sprintf("%v:%v", grpcListenIp, grpcListenPort)
 				serviceName = "addsvc"
 			)
 			recorder := zipkinot.NewRecorder(collector, debug, hostPort, serviceName)
@@ -156,7 +153,7 @@ func main() {
 	{
 		var (
 			err           error
-			hostPort      = grpcAddr//"localhost:80"
+			hostPort      = fmt.Sprintf("%v:%v", grpcListenIp, grpcListenPort)//"localhost:80"
 			serviceName   = "addsvc"
 			useNoopTracer = false//(zipkinV2URL == "")
 			reporter      = zipkinhttp.NewReporter(zipkinV2URL)
@@ -245,13 +242,13 @@ func main() {
 	}
 	{
 		// The gRPC listener mounts the Go kit gRPC server we created.
-		grpcListener, err := net.Listen("tcp", grpcAddr)
+		grpcListener, err := net.Listen("tcp", fmt.Sprintf("%v:%v", grpcListenIp, grpcListenPort))
 		if err != nil {
 			logger.Log("transport", "gRPC", "during", "Listen", "err", err)
 			os.Exit(1)
 		}
 		g.Add(func() error {
-			logger.Log("transport", "gRPC", "addr", grpcAddr)
+			logger.Log("transport", "gRPC", "addr", fmt.Sprintf("%v:%v", grpcListenIp, grpcListenPort))
 			// we add the Go Kit gRPC Interceptor to our gRPC service as it is used by
 			// the here demonstrated zipkin tracing middleware.
 

@@ -11,7 +11,7 @@ import (
 	"github.com/go-kit/kit/tracing/zipkin"
 	grpctransport "github.com/go-kit/kit/transport/grpc"
 
-	"pb"
+	pb "github.com/jilieryuyi/grpc-gateway/proto"
 	"pkg/addendpoint"
 )
 
