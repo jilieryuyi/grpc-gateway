@@ -2,7 +2,7 @@
 // source: addsvc.proto
 
 /*
-Package pb is a reverse proxy.
+Package proto is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
@@ -137,7 +137,7 @@ func RegisterAddHandlerClient(ctx context.Context, mux *runtime.ServeMux, client
 }
 
 var (
-	pattern_Add_Sum_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 1, 0, 4, 1, 5, 2}, []string{"sum", "a", "b"}, ""))
+	pattern_Add_Sum_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"add", "sum", "a", "b"}, ""))
 )
 
 var (
