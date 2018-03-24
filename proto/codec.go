@@ -8,12 +8,10 @@ import (
 
 
 func Codec() grpc.Codec {
-
 	return &myprotoCodec{}
 }
 
-type myprotoCodec struct{
-}
+type myprotoCodec struct{}
 
 
 // CodecWithParent returns a proxying grpc.Codec with a user provided codec as parent.
