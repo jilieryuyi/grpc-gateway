@@ -22,7 +22,7 @@ import (
 	"github.com/go-kit/kit/metrics/prometheus"
 	kitgrpc "github.com/go-kit/kit/transport/grpc"
 
-	addpb "pb"
+	addpb "github.com/jilieryuyi/grpc-gateway/proto"
 	"pkg/addendpoint"
 	"pkg/addservice"
 	"pkg/addtransport"
