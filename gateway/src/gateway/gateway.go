@@ -113,5 +113,33 @@ func main() {
 			debugListener.Close()
 		})
 	}
+
+	{
+		// http协议转grpc协议服务
+		// The debug listener mounts the http.DefaultServeMux, and serves up
+		// stuff like the Prometheus metrics route, the Go debug and profiling
+		// routes, and so on.
+		debugListener, err := net.Listen("tcp", ":8084")
+		if err != nil {
+			os.Exit(1)
+		}
+
+		ctx := context.Background()
+		ctx, cancel := context.WithCancel(ctx)
+		defer cancel()
+
+		mux := &proxy.MyMux{}//runtime.NewServeMux()
+		opts := []grpc.DialOption{grpc.WithInsecure()}
+		err = proxy.RegisterHandlerFromEndpoint(ctx, mux, opts)
+		if err != nil {
+			fmt.Printf("%v\n", err)
+			return
+		}
+		g.Add(func() error {
+			return http.Serve(debugListener, mux)
+		}, func(error) {
+			debugListener.Close()
+		})
+	}
 	g.Run()
 }

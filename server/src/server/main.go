@@ -26,7 +26,77 @@ import (
 	"pkg/addendpoint"
 	"pkg/addservice"
 	"pkg/addtransport"
+	//"encoding/json"
+	//"github.com/golang/protobuf/proto"
+
+	//"math"
+	"google.golang.org/grpc/encoding"
+	eproto "google.golang.org/grpc/encoding/proto"
+
+	//"bytes"
+	"encoding/json"
 )
+
+
+
+func MyCodec() grpc.Codec {
+	defauleCode := encoding.GetCodec(eproto.Name)
+	return &myprotoCodec{defauleCode, 0}
+}
+
+type myprotoCodec struct{
+	DefauleCode encoding.Codec
+	DataType int //0 default 1 json
+}
+
+
+// CodecWithParent returns a proxying grpc.Codec with a user provided codec as parent.
+//
+// This codec is *crucial* to the functioning of the proxy. It allows the proxy server to be oblivious
+// to the schema of the forwarded messages. It basically treats a gRPC message frame as raw bytes.
+// However, if the server handler, or the client caller are not proxy-internal functions it will fall back
+// to trying to decode the message using a fallback codec.
+//func MyCodecWithParent(fallback grpc.Codec) grpc.Codec {
+//	return &rawCodec{fallback}
+//}
+
+
+func (d *myprotoCodec) Marshal(v interface{}) ([]byte, error) {
+	fmt.Printf("myprotoCodec Marshal msg: %v\n", v)
+	//if d.DataType == 1 {
+	//	d.DataType = 0
+		return json.Marshal(v)
+	//}
+	//return d.DefauleCode.Marshal(v)
+}
+
+func (d *myprotoCodec) Unmarshal(data []byte, v interface{}) error {
+	fmt.Printf("myprotoCodec Unmarshal msg: %+v, %+v\n", string(data), v)
+	//err := json.Unmarshal(data, &v)
+	//if err != nil {
+	//	return proto.Unmarshal(data, v.(proto.Message))
+	//}
+	//return err
+	//prev := []byte("----json----")
+	//if bytes.HasPrefix(data, prev) {
+	//	d.DataType = 1
+		return json.Unmarshal(data, v)
+	//}
+	//return d.DefauleCode.Unmarshal(data, v)
+}
+
+func (d *myprotoCodec) String() string {
+	fmt.Println("myprotoCodec string")
+	//return "proto"
+	return  d.DefauleCode.Name()
+}
+
+func (d *myprotoCodec) Name() string {
+	fmt.Println("myprotoCodec string")
+	return  d.DefauleCode.Name()
+}
+
+
 
 func main() {
 	debugAddr      := "0.0.0.0:8080"
@@ -170,7 +240,11 @@ func main() {
 			logger.Log("transport", "gRPC", "addr", grpcAddr)
 			// we add the Go Kit gRPC Interceptor to our gRPC service as it is used by
 			// the here demonstrated zipkin tracing middleware.
-			baseServer := grpc.NewServer(grpc.UnaryInterceptor(kitgrpc.Interceptor))
+
+
+			baseServer := grpc.NewServer(grpc.UnaryInterceptor(kitgrpc.Interceptor),
+				grpc.CustomCodec(MyCodec()))
+
 			addpb.RegisterAddServer(baseServer, grpcServer)
 			return baseServer.Serve(grpcListener)
 		}, func(error) {
