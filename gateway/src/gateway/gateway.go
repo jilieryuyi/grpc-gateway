@@ -33,8 +33,6 @@ type clientConn struct{
 }
 
 func main() {
-	//flag.Parse()
-	//defer glog.Flush()
 
 	var g group.Group
 	{
