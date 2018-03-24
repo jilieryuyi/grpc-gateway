@@ -13,7 +13,7 @@ It has these top-level messages:
 	ConcatRequest
 	ConcatReply
 */
-package pb
+package proto
 
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"

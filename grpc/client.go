@@ -1,4 +1,4 @@
-package main
+package grpc
 
 // run: go run client.go api.pb.go
 // 简单的grpc客户端实现
