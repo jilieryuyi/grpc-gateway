@@ -35,6 +35,7 @@ import (
 
 	//"bytes"
 	"encoding/json"
+	"service"
 )
 
 
@@ -99,6 +100,19 @@ func (d *myprotoCodec) Name() string {
 
 
 func main() {
+
+	// 这里选项后续会放到配置文件
+	grpcListenIp := "0.0.0.0" //grpc监听ip
+	grpcListenPort := 8082 //grpc监听端口
+	grpcServiceIp := "127.0.0.1" //grpc通过这个ip对外服务，可以自由配置外网内网，配合监听ip使用
+	serviceName := "service.add"
+
+
+	//这是一个服务
+	//将被注册到consul
+	sev := service.NewService(grpcListenIp, grpcListenPort, grpcServiceIp, serviceName)
+	sev.Register()
+
 	debugAddr      := "0.0.0.0:8080"
 	//grpc服务接听
 	grpcAddr       := "0.0.0.0:8082"

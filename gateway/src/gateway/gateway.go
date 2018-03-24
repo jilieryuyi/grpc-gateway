@@ -10,9 +10,7 @@ package main
 import (
 	"net/http"
 	"golang.org/x/net/context"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
-	"github.com/jilieryuyi/go-kit-grpc-test-demo/server/src/pb"
 	"proxy"
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/codes"
@@ -34,14 +32,16 @@ type clientConn struct{
 
 func main() {
 
+	// grpc gateway 代理服务
+	grpcAddr := ":8081"
 	var g group.Group
 	{
-		lis, _ := net.Listen("tcp", "0.0.0.0:8081")
+		lis, _ := net.Listen("tcp", grpcAddr)
 		var connects = make(map[string]*clientConn)
 		//proxy grpc server
 		g.Add(func() error {
 			var director = func(ctx context.Context, fullMethodName string) (context.Context, *grpc.ClientConn, error) {
-
+				fmt.Printf("%+v", ctx)
 				// Make sure we never forward internal services.
 				//if strings.HasPrefix(fullMethodName, "/com.example.internal.") {
 				//	return nil, nil, status.Errorf(codes.Unimplemented, "Unknown method")
@@ -81,34 +81,6 @@ func main() {
 			return ser.Serve(lis)
 		}, func(error) {
 			lis.Close()
-		})
-	}
-
-	{
-		// http协议转grpc协议服务
-		// The debug listener mounts the http.DefaultServeMux, and serves up
-		// stuff like the Prometheus metrics route, the Go debug and profiling
-		// routes, and so on.
-		debugListener, err := net.Listen("tcp", ":8083")
-		if err != nil {
-			os.Exit(1)
-		}
-
-		ctx := context.Background()
-		ctx, cancel := context.WithCancel(ctx)
-		defer cancel()
-
-		mux := runtime.NewServeMux()
-		opts := []grpc.DialOption{grpc.WithInsecure()}
-		err = pb.RegisterAddHandlerFromEndpoint(ctx, mux, echoEndpoint, opts)
-		if err != nil {
-			fmt.Printf("%v\n", err)
-			return
-		}
-		g.Add(func() error {
-			return http.Serve(debugListener, mux)
-		}, func(error) {
-			debugListener.Close()
 		})
 	}
 
