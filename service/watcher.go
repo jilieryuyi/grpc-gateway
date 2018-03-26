@@ -1,67 +1,87 @@
 package service
+
 import (
 	"fmt"
-	"golang.org/x/net/context"
+	"time"
+
+	consul "github.com/hashicorp/consul/api"
 	"google.golang.org/grpc/naming"
 )
 
+// ConsulWatcher is the implementation of grpc.naming.Watcher
+type ConsulWatcher struct {
+	// cr: ConsulResolver
+	cr *ConsulResolver
+	// cc: Consul Client
+	cc *consul.Client
 
-// Close do nothing
-func (w *resolver) Close() {
+	// LastIndex to watch consul
+	li uint64
+
+	// addrs is the service address cache
+	// before check: every value shoud be 1
+	// after check: 1 - deleted  2 - nothing  3 - new added
+	addrs []string
+}
+
+// Close do nonthing
+func (cw *ConsulWatcher) Close() {
 }
 
 // Next to return the updates
-func (w *resolver) Next() ([]*naming.Update, error) {
-	// prefix is the etcd prefix/value to watch
-	prefix := fmt.Sprintf("/%s/%s/", Prefix, w.re.serviceName)
+func (cw *ConsulWatcher) Next() ([]*naming.Update, error) {
+	// Nil cw.addrs means it is initial called
+	// If get addrs, return to balancer
+	// If no addrs, need to watch consul
+	if cw.addrs == nil {
+		// must return addrs to balancer, use ticker to query consul till data gotten
+		addrs, li, _ := cw.queryConsul(nil)
 
-	// check if is initialized
-	if !w.isInitialized {
-		// query addresses from etcd
-		resp, err := w.client.Get(context.Background(), prefix, etcd3.WithPrefix())
-		w.isInitialized = true
-		if err == nil {
-			addrs := extractAddrs(resp)
-			//if not empty, return the updates or watcher new dir
-			if l := len(addrs); l != 0 {
-				updates := make([]*naming.Update, l)
-				for i := range addrs {
-					updates[i] = &naming.Update{Op: naming.Add, Addr: addrs[i]}
-				}
-				return updates, nil
-			}
+		// got addrs, return
+		if len(addrs) != 0 {
+			cw.addrs = addrs
+			cw.li = li
+			return GenUpdates([]string{}, addrs), nil
 		}
 	}
 
-	// generate etcd Watcher
-	rch := w.client.Watch(context.Background(), prefix, etcd3.WithPrefix())
-	for wresp := range rch {
-		for _, ev := range wresp.Events {
-			switch ev.Type {
-			case mvccpb.PUT:
-				return []*naming.Update{{Op: naming.Add, Addr: string(ev.Kv.Value)}}, nil
-			case mvccpb.DELETE:
-				return []*naming.Update{{Op: naming.Delete, Addr: string(ev.Kv.Value)}}, nil
-			}
+	for {
+		// watch consul
+		addrs, li, err := cw.queryConsul(&consul.QueryOptions{WaitIndex: cw.li})
+		if err != nil {
+			time.Sleep(1 * time.Second)
+			continue
+		}
+
+		// generate updates
+		updates := GenUpdates(cw.addrs, addrs)
+
+		// update addrs & last index
+		cw.addrs = addrs
+		cw.li = li
+
+		if len(updates) != 0 {
+			return updates, nil
 		}
 	}
-	return nil, nil
+
+	// should never come here
+	return []*naming.Update{}, nil
 }
 
-func extractAddrs(resp *etcd3.GetResponse) []string {
-	addrs := []string{}
-
-	if resp == nil || resp.Kvs == nil {
-		return addrs
+// queryConsul is helper function to query consul
+func (cw *ConsulWatcher) queryConsul(q *consul.QueryOptions) ([]string, uint64, error) {
+	// query consul
+	cs, meta, err := cw.cc.Health().Service(cw.cr.ServiceName, "", true, q)
+	if err != nil {
+		return nil, 0, err
 	}
 
-	for i := range resp.Kvs {
-		if v := resp.Kvs[i].Value; v != nil {
-			addrs = append(addrs, string(v))
-		}
+	addrs := make([]string, 0)
+	for _, s := range cs {
+		// addr should like: 127.0.0.1:8001
+		addrs = append(addrs, fmt.Sprintf("%s:%d", s.Service.Address, s.Service.Port))
 	}
 
-	return addrs
+	return addrs, meta.LastIndex, nil
 }
-
-

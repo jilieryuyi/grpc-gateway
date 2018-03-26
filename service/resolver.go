@@ -2,32 +2,42 @@ package service
 
 import (
 	"errors"
-	"github.com/hashicorp/consul/api"
+	"fmt"
+
+	consul "github.com/hashicorp/consul/api"
 	"google.golang.org/grpc/naming"
-	log "github.com/sirupsen/logrus"
 )
-type resolver struct {
-	serviceName string // service name to resolve
-	 client *api.Client
+
+// ConsulResolver is the implementaion of grpc.naming.Resolver
+type ConsulResolver struct {
+	ServiceName string //service name
 }
 
-// NewResolver return resolver with service name
-func NewResolver(serviceName string, consulAddress string) *resolver {
-	config := api.DefaultConfig()
-	config.Address = consulAddress
-	// generate etcd client
-	client, err := api.NewClient(config)
+// NewResolver return ConsulResolver with service name
+func NewResolver(serviceName string) *ConsulResolver {
+	return &ConsulResolver{ServiceName: serviceName}
+}
+
+// Resolve to resolve the service from consul, target is the dial address of consul
+func (cr *ConsulResolver) Resolve(target string) (naming.Watcher, error) {
+	if cr.ServiceName == "" {
+		return nil, errors.New("wonaming: no service name provided")
+	}
+
+	// generate consul client, return if error
+	conf := &consul.Config{
+		Scheme:  "http",
+		Address: target,
+	}
+	client, err := consul.NewClient(conf)
 	if err != nil {
-		log.Panicf("%+v", err)
-		//return nil, fmt.Errorf("grpclb: creat etcd3 client failed: %s", err.Error())
+		return nil, fmt.Errorf("wonaming: creat consul error: %v", err)
 	}
-	return &resolver{serviceName: serviceName, client:client}
-}
 
-func (re *resolver) Resolve(target string) (naming.Watcher, error) {
-	if re.serviceName == "" {
-		return nil, errors.New("grpclb: no service name provided")
+	// return ConsulWatcher
+	watcher := &ConsulWatcher{
+		cr: cr,
+		cc: client,
 	}
-	// Return watcher
-	return re, nil//&watcher{re: re, client: *client}, nil
+	return watcher, nil
 }

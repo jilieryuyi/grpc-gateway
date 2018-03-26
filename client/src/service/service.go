@@ -13,7 +13,7 @@ import (
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
 
 	"github.com/go-kit/kit/log"
-
+	"github.com/jilieryuyi/grpc-gateway/service"
 	"pkg/addservice"
 	"pkg/addtransport"
 	"proto"
@@ -103,7 +103,14 @@ func (p *Pool) Get(serviceName string) addservice.Service {
 		err error
 	)
 	opt := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()))
-	conn, err := grpc.Dial(grpcAddr, grpc.WithInsecure(), grpc.WithTimeout(time.Second), opt)
+
+	r := service.NewResolver(*serv)
+	b := grpc.RoundRobin(r)
+
+	conn, err := grpc.Dial(grpcAddr,
+		grpc.WithInsecure(),
+		grpc.WithTimeout(time.Second), opt,
+		grpc.WithBalancer(b))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v", err)
 		os.Exit(1)
