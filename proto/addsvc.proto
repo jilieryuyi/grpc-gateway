@@ -4,11 +4,11 @@ package proto;
 import "google/api/annotations.proto";
 
 // The Add service definition.
-service Add {
+service ServiceAdd {
   // Sums two integers.
   rpc Sum (SumRequest) returns (SumReply) {
     option (google.api.http) = {
-			get: "/add/sum/{a}/{b}"
+			get: "/service.add/sum/{a}/{b}"
 		};
   }
 

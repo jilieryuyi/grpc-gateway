@@ -28,7 +28,7 @@ var _ status.Status
 var _ = runtime.String
 var _ = utilities.NewDoubleArray
 
-func request_Add_Sum_0(ctx context.Context, marshaler runtime.Marshaler, client AddClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_ServiceAdd_Sum_0(ctx context.Context, marshaler runtime.Marshaler, client ServiceAddClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq SumRequest
 	var metadata runtime.ServerMetadata
 
@@ -66,9 +66,9 @@ func request_Add_Sum_0(ctx context.Context, marshaler runtime.Marshaler, client 
 
 }
 
-// RegisterAddHandlerFromEndpoint is same as RegisterAddHandler but
+// RegisterServiceAddHandlerFromEndpoint is same as RegisterServiceAddHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterAddHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterServiceAddHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -88,23 +88,23 @@ func RegisterAddHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, 
 		}()
 	}()
 
-	return RegisterAddHandler(ctx, mux, conn)
+	return RegisterServiceAddHandler(ctx, mux, conn)
 }
 
-// RegisterAddHandler registers the http handlers for service Add to "mux".
+// RegisterServiceAddHandler registers the http handlers for service ServiceAdd to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterAddHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterAddHandlerClient(ctx, mux, NewAddClient(conn))
+func RegisterServiceAddHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterServiceAddHandlerClient(ctx, mux, NewServiceAddClient(conn))
 }
 
-// RegisterAddHandler registers the http handlers for service Add to "mux".
-// The handlers forward requests to the grpc endpoint over the given implementation of "AddClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "AddClient"
+// RegisterServiceAddHandler registers the http handlers for service ServiceAdd to "mux".
+// The handlers forward requests to the grpc endpoint over the given implementation of "ServiceAddClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ServiceAddClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "AddClient" to call the correct interceptors.
-func RegisterAddHandlerClient(ctx context.Context, mux *runtime.ServeMux, client AddClient) error {
+// "ServiceAddClient" to call the correct interceptors.
+func RegisterServiceAddHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ServiceAddClient) error {
 
-	mux.Handle("GET", pattern_Add_Sum_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_ServiceAdd_Sum_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -122,14 +122,14 @@ func RegisterAddHandlerClient(ctx context.Context, mux *runtime.ServeMux, client
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Add_Sum_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_ServiceAdd_Sum_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Add_Sum_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_ServiceAdd_Sum_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -137,9 +137,9 @@ func RegisterAddHandlerClient(ctx context.Context, mux *runtime.ServeMux, client
 }
 
 var (
-	pattern_Add_Sum_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"add", "sum", "a", "b"}, ""))
+	pattern_ServiceAdd_Sum_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3}, []string{"service.add", "sum", "a", "b"}, ""))
 )
 
 var (
-	forward_Add_Sum_0 = runtime.ForwardResponseMessage
+	forward_ServiceAdd_Sum_0 = runtime.ForwardResponseMessage
 )

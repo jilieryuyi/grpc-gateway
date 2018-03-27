@@ -151,101 +151,101 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// Client API for Add service
+// Client API for ServiceAdd service
 
-type AddClient interface {
+type ServiceAddClient interface {
 	// Sums two integers.
 	Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumReply, error)
 	// Concatenates two strings
 	Concat(ctx context.Context, in *ConcatRequest, opts ...grpc.CallOption) (*ConcatReply, error)
 }
 
-type addClient struct {
+type serviceAddClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewAddClient(cc *grpc.ClientConn) AddClient {
-	return &addClient{cc}
+func NewServiceAddClient(cc *grpc.ClientConn) ServiceAddClient {
+	return &serviceAddClient{cc}
 }
 
-func (c *addClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumReply, error) {
+func (c *serviceAddClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumReply, error) {
 	out := new(SumReply)
-	err := grpc.Invoke(ctx, "/proto.Add/Sum", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/proto.ServiceAdd/Sum", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *addClient) Concat(ctx context.Context, in *ConcatRequest, opts ...grpc.CallOption) (*ConcatReply, error) {
+func (c *serviceAddClient) Concat(ctx context.Context, in *ConcatRequest, opts ...grpc.CallOption) (*ConcatReply, error) {
 	out := new(ConcatReply)
-	err := grpc.Invoke(ctx, "/proto.Add/Concat", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/proto.ServiceAdd/Concat", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// Server API for Add service
+// Server API for ServiceAdd service
 
-type AddServer interface {
+type ServiceAddServer interface {
 	// Sums two integers.
 	Sum(context.Context, *SumRequest) (*SumReply, error)
 	// Concatenates two strings
 	Concat(context.Context, *ConcatRequest) (*ConcatReply, error)
 }
 
-func RegisterAddServer(s *grpc.Server, srv AddServer) {
-	s.RegisterService(&_Add_serviceDesc, srv)
+func RegisterServiceAddServer(s *grpc.Server, srv ServiceAddServer) {
+	s.RegisterService(&_ServiceAdd_serviceDesc, srv)
 }
 
-func _Add_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ServiceAdd_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SumRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AddServer).Sum(ctx, in)
+		return srv.(ServiceAddServer).Sum(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.Add/Sum",
+		FullMethod: "/proto.ServiceAdd/Sum",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AddServer).Sum(ctx, req.(*SumRequest))
+		return srv.(ServiceAddServer).Sum(ctx, req.(*SumRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Add_Concat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ServiceAdd_Concat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ConcatRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AddServer).Concat(ctx, in)
+		return srv.(ServiceAddServer).Concat(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.Add/Concat",
+		FullMethod: "/proto.ServiceAdd/Concat",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AddServer).Concat(ctx, req.(*ConcatRequest))
+		return srv.(ServiceAddServer).Concat(ctx, req.(*ConcatRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _Add_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.Add",
-	HandlerType: (*AddServer)(nil),
+var _ServiceAdd_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.ServiceAdd",
+	HandlerType: (*ServiceAddServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Sum",
-			Handler:    _Add_Sum_Handler,
+			Handler:    _ServiceAdd_Sum_Handler,
 		},
 		{
 			MethodName: "Concat",
-			Handler:    _Add_Concat_Handler,
+			Handler:    _ServiceAdd_Concat_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -255,7 +255,7 @@ var _Add_serviceDesc = grpc.ServiceDesc{
 func init() { proto1.RegisterFile("addsvc.proto", fileDescriptor0) }
 
 var fileDescriptor0 = []byte{
-	// 240 bytes of a gzipped FileDescriptorProto
+	// 252 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x49, 0x4c, 0x49, 0x29,
 	0x2e, 0x4b, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x05, 0x53, 0x52, 0x32, 0xe9, 0xf9,
 	0xf9, 0xe9, 0x39, 0xa9, 0xfa, 0x89, 0x05, 0x99, 0xfa, 0x89, 0x79, 0x79, 0xf9, 0x25, 0x89, 0x25,
@@ -265,10 +265,11 @@ var fileDescriptor0 = []byte{
 	0x90, 0x53, 0x09, 0x92, 0x29, 0x83, 0xa9, 0x2b, 0x13, 0x12, 0xe0, 0x62, 0x4e, 0x2d, 0x2a, 0x02,
 	0xab, 0xe4, 0x0c, 0x02, 0x31, 0x95, 0xb4, 0xb9, 0x78, 0x9d, 0xf3, 0xf3, 0x92, 0x13, 0x4b, 0x30,
 	0x0c, 0xe6, 0x44, 0x31, 0x98, 0x13, 0x64, 0xb0, 0x2e, 0x17, 0x37, 0x4c, 0x31, 0x8a, 0xd9, 0x9c,
-	0x58, 0xcd, 0x36, 0x6a, 0x60, 0xe4, 0x62, 0x76, 0x4c, 0x49, 0x11, 0x72, 0xe6, 0x62, 0x0e, 0x2e,
-	0xcd, 0x15, 0x12, 0x84, 0x78, 0x44, 0x0f, 0xe1, 0x0b, 0x29, 0x7e, 0x64, 0xa1, 0x82, 0x9c, 0x4a,
-	0x25, 0x89, 0xa6, 0xcb, 0x4f, 0x26, 0x33, 0x09, 0x09, 0x09, 0xe8, 0x27, 0xa6, 0xa4, 0xe8, 0x17,
-	0x97, 0xe6, 0xea, 0x57, 0x27, 0xd6, 0xea, 0x57, 0x27, 0xd5, 0x0a, 0x99, 0x70, 0xb1, 0x41, 0xec,
-	0x16, 0x12, 0x81, 0x6a, 0x42, 0x71, 0xb7, 0x94, 0x10, 0x9a, 0x28, 0xc8, 0x34, 0x86, 0x24, 0x36,
-	0xb0, 0xa0, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0x1b, 0xce, 0x5d, 0x74, 0x70, 0x01, 0x00, 0x00,
+	0x58, 0xcd, 0x36, 0xea, 0x67, 0xe4, 0xe2, 0x0a, 0x4e, 0x2d, 0x2a, 0xcb, 0x4c, 0x4e, 0x75, 0x4c,
+	0x49, 0x11, 0xf2, 0xe6, 0x62, 0x0e, 0x2e, 0xcd, 0x15, 0x12, 0x84, 0xf8, 0x47, 0x0f, 0xe1, 0x19,
+	0x29, 0x7e, 0x64, 0xa1, 0x82, 0x9c, 0x4a, 0x25, 0x85, 0xa6, 0xcb, 0x4f, 0x26, 0x33, 0x49, 0x09,
+	0x49, 0xe8, 0x17, 0x43, 0xf4, 0xeb, 0x25, 0xa6, 0xa4, 0xe8, 0x17, 0x97, 0xe6, 0xea, 0x57, 0x27,
+	0xd6, 0xea, 0x57, 0x27, 0xd5, 0x0a, 0x99, 0x70, 0xb1, 0x41, 0x9c, 0x22, 0x24, 0x02, 0xd5, 0x8c,
+	0xe2, 0x0d, 0x29, 0x21, 0x34, 0x51, 0x90, 0xa9, 0x0c, 0x49, 0x6c, 0x60, 0x41, 0x63, 0x40, 0x00,
+	0x00, 0x00, 0xff, 0xff, 0x86, 0xae, 0x21, 0x97, 0x7f, 0x01, 0x00, 0x00,
 }

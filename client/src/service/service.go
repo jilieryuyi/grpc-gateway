@@ -16,7 +16,7 @@ import (
 	"github.com/jilieryuyi/grpc-gateway/service"
 	"pkg/addservice"
 	"pkg/addtransport"
-	"proto"
+	"github.com/jilieryuyi/grpc-gateway/proto"
 	//"github.com/hashicorp/consul/api"
 )
 

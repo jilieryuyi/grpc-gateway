@@ -33,19 +33,18 @@ func main() {
 
 	// 这里选项后续会放到配置文件
 	grpcListenIp   := "0.0.0.0" //grpc监听ip
-	grpcListenPort := 8082 //grpc监听端口
+	grpcListenPort := 8192 //grpc监听端口
 	grpcServiceIp  := "127.0.0.1" //grpc通过这个ip对外服务，可以自由配置外网内网，配合监听ip使用
 	serviceName    := "service.add"
 	consulAddress  := "127.0.0.1:8500"
-	debugAddr      := "0.0.0.0:8080" // for prometheus
+	debugAddr      := "0.0.0.0:8190" // for prometheus
 	zipkinAddress  := "localhost:9411"
 	zipkinV2URL    := "http://" + zipkinAddress + "/api/v2/spans"
 	zipkinV1URL    := "http://" + zipkinAddress + "/api/v1/spans"
 
 	//这是一个服务
 	//将被注册到consul
-	sev := service.NewService(grpcListenIp, grpcListenPort,
-		grpcServiceIp, serviceName, consulAddress)
+	sev := service.NewService(serviceName, grpcListenIp, grpcListenPort, consulAddress, service.ServiceIp(grpcServiceIp))
 	sev.Register()
 
 	// Create a single logger, which we'll use and give to other components.
@@ -137,8 +136,8 @@ func main() {
 	// the interfaces that the transports expect. Note that we're not binding
 	// them to ports or anything yet; we'll do that next.
 	var (
-		service        = addservice.New(logger, ints, chars)
-		endpoints      = addendpoint.New(service, logger, duration, tracer, zipkinTracer)
+		addService        = addservice.New(logger, ints, chars)
+		endpoints      = addendpoint.New(addService, logger, duration, tracer, zipkinTracer)
 		grpcServer     = addtransport.NewGRPCServer(endpoints, tracer, zipkinTracer, logger)
 	)
 

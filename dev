@@ -1,0 +1,2 @@
+cp -rf ./* /Users/yuyi/go/src/github.com/jilieryuyi/grpc-gateway
+/Users/yuyi/Code/go/tools/consul/consul  agent -config-dir /Users/yuyi/Code/go/tools/consul/conf -pid-file=/Users/yuyi/Code/go/tools/consul/consul-server.pid

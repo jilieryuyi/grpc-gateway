@@ -19,9 +19,11 @@ import (
 	"net"
 	"fmt"
 	"os"
+	"github.com/jilieryuyi/grpc-gateway/service"
 )
 
 var (
+	//这个地址要使用负载均衡和服务发现
 	echoEndpoint = "localhost:8082"
 )
 
@@ -33,7 +35,17 @@ type clientConn struct{
 func main() {
 
 	// grpc gateway 代理服务
-	grpcAddr := ":8081"
+	grpcListenIp := "0.0.0.0"
+	grpcListenPort := 8081
+	consulAddress := "127.0.0.1:8500"
+	grpcServiceIp := "127.0.0.1"
+
+	//todo 注册gateway服务
+	serviceName := "service.gateway"
+	sev := service.NewService(serviceName, grpcListenIp, grpcListenPort, consulAddress, service.ServiceIp(grpcServiceIp))
+	sev.Register()
+
+	grpcAddr := fmt.Sprintf("%v:%v", grpcListenIp, grpcListenPort)//":8081"
 	var g group.Group
 	{
 		lis, _ := net.Listen("tcp", grpcAddr)
@@ -41,6 +53,7 @@ func main() {
 		//proxy grpc server
 		g.Add(func() error {
 			var director = func(ctx context.Context, fullMethodName string) (context.Context, *grpc.ClientConn, error) {
+				fmt.Printf("%+v", fullMethodName)
 				fmt.Printf("%+v", ctx)
 				// Make sure we never forward internal services.
 				//if strings.HasPrefix(fullMethodName, "/com.example.internal.") {
