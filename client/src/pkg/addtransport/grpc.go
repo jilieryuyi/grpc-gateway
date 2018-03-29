@@ -60,7 +60,7 @@ func NewGRPCClient(conn *grpc.ClientConn, otTracer stdopentracing.Tracer, zipkin
 	{
 		sumEndpoint = grpctransport.NewClient(
 			conn,
-			"proto.Add",
+			"proto.ServiceAdd",
 			"Sum",
 			encodeGRPCSumRequest,
 			decodeGRPCSumResponse,
@@ -81,7 +81,7 @@ func NewGRPCClient(conn *grpc.ClientConn, otTracer stdopentracing.Tracer, zipkin
 	{
 		concatEndpoint = grpctransport.NewClient(
 			conn,
-			"proto.Add",
+			"proto.ServiceAdd",
 			"Concat",
 			encodeGRPCConcatRequest,
 			decodeGRPCConcatResponse,
