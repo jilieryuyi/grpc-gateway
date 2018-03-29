@@ -20,7 +20,7 @@ func main() {
 	b      := grpc.RoundRobin(r)
 	lb     := grpc.WithBalancer(b)
 
-	conn, err := grpc.DialContext(ctx, "service.add", grpc.WithInsecure(), opt, lb)
+	conn, err := grpc.DialContext(ctx, "service.gateway", grpc.WithInsecure(), opt, lb)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v", err)
 		os.Exit(1)

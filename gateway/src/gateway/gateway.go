@@ -53,6 +53,8 @@ func main() {
 		//proxy grpc server
 		g.Add(func() error {
 			var director = func(ctx context.Context, fullMethodName string) (context.Context, *grpc.ClientConn, error) {
+				// /proto.ServiceAdd/Sum
+				// todo 负载均衡
 				fmt.Printf("%+v", fullMethodName)
 				fmt.Printf("%+v", ctx)
 				// Make sure we never forward internal services.
