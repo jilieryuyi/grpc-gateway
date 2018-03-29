@@ -21,7 +21,7 @@ type grpcServer struct {
 }
 
 // NewGRPCServer makes a set of endpoints available as a gRPC AddServer.
-func NewGRPCServer(endpoints addendpoint.Set, otTracer stdopentracing.Tracer, zipkinTracer *stdzipkin.Tracer, logger log.Logger) pb.AddServer {
+func NewGRPCServer(endpoints addendpoint.Set, otTracer stdopentracing.Tracer, zipkinTracer *stdzipkin.Tracer, logger log.Logger) pb.ServiceAddServer {
 	// Zipkin GRPC Server Trace can either be instantiated per gRPC method with a
 	// provided operation name or a global tracing service can be instantiated
 	// without an operation name and fed to each Go kit gRPC server as a

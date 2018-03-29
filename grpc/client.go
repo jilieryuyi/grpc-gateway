@@ -9,9 +9,10 @@ import (
 	"os"
 	"time"
 	"google.golang.org/grpc"
-	"github.com/jilieryuyi/go-kit-grpc-test-demo/server/src/pb"
-
+	"github.com/jilieryuyi/grpc-gateway/proto"
+	"github.com/jilieryuyi/grpc-gateway/service"
 	"encoding/json"
+	//"google.golang.org/grpc/balancer/roundrobin"
 )
 
 
@@ -65,23 +66,27 @@ func (myprotoCodec) Name() string {
 
 
 func main() {
-	grpcAddr       := "127.0.0.1:8081"
+	//grpcAddr       := "http://127.0.0.1:8500"//"127.0.0.1:8081"
 	ctx, _ := context.WithTimeout(context.Background(), time.Second)
 
 	opt := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(MyCodec()))
 
-	conn, err := grpc.DialContext(ctx, grpcAddr, grpc.WithInsecure(), opt)
+	//balance := grpc.WithBalancerName(roundrobin.Name)
+	r  := service.NewResolver()
+	b  := grpc.RoundRobin(r)
+	lb := grpc.WithBalancer(b)
+	conn, err := grpc.DialContext(ctx, "service.add", grpc.WithInsecure(), opt, lb)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v", err)
 		os.Exit(1)
 	}
 	defer conn.Close()
-	svc := pb.NewAddClient(conn)
-	req := &pb.SumRequest{
+	svc := proto.NewServiceAddClient(conn)
+	req := &proto.SumRequest{
 		A:100,
 		B:100,
 	}
-	v, err := svc.Sum(context.Background(), req)
+	v, err := svc.Sum(context.Background(), req, grpc.FailFast(false))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)

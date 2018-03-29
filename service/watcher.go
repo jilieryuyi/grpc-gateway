@@ -6,14 +6,14 @@ import (
 
 	consul "github.com/hashicorp/consul/api"
 	"google.golang.org/grpc/naming"
+	//"google.golang.org/grpc"
 )
 
 // ConsulWatcher is the implementation of grpc.naming.Watcher
 type ConsulWatcher struct {
-	// cr: ConsulResolver
 	cr *ConsulResolver
 	// cc: Consul Client
-	cc *consul.Client
+	cc *consul.Client//*grpc.ClientConn
 
 	// LastIndex to watch consul
 	li uint64
@@ -22,6 +22,9 @@ type ConsulWatcher struct {
 	// before check: every value shoud be 1
 	// after check: 1 - deleted  2 - nothing  3 - new added
 	addrs []string
+	target string
+	//consulAddress string
+	//client *consul.Client
 }
 
 // Close do nonthing
@@ -30,13 +33,15 @@ func (cw *ConsulWatcher) Close() {
 
 // Next to return the updates
 func (cw *ConsulWatcher) Next() ([]*naming.Update, error) {
+	fmt.Printf("hahah==>%v\n\n", *cw)
 	// Nil cw.addrs means it is initial called
 	// If get addrs, return to balancer
 	// If no addrs, need to watch consul
 	if cw.addrs == nil {
+		fmt.Printf("start query consul\n")
 		// must return addrs to balancer, use ticker to query consul till data gotten
 		addrs, li, _ := cw.queryConsul(nil)
-
+		fmt.Printf("1===>%+v\n", addrs, li)
 		// got addrs, return
 		if len(addrs) != 0 {
 			cw.addrs = addrs
@@ -52,6 +57,7 @@ func (cw *ConsulWatcher) Next() ([]*naming.Update, error) {
 			time.Sleep(1 * time.Second)
 			continue
 		}
+		fmt.Printf("2===>%+v\n", addrs, li)
 
 		// generate updates
 		updates := GenUpdates(cw.addrs, addrs)
@@ -71,8 +77,10 @@ func (cw *ConsulWatcher) Next() ([]*naming.Update, error) {
 
 // queryConsul is helper function to query consul
 func (cw *ConsulWatcher) queryConsul(q *consul.QueryOptions) ([]string, uint64, error) {
+	fmt.Printf("start query consul 2 ==== %v\n", cw.target)
 	// query consul
-	cs, meta, err := cw.cc.Health().Service(cw.cr.ServiceName, "", true, q)
+	cs, meta, err := cw.cc.Health().Service(cw.target, "", true, q)
+	fmt.Printf("#####%+v, %+v, %+v",cs, meta, err)
 	if err != nil {
 		return nil, 0, err
 	}

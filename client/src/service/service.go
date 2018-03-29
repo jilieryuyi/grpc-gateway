@@ -3,7 +3,7 @@ package service
 import (
 	"fmt"
 	"os"
-	"time"
+	_ "time"
 
 	"google.golang.org/grpc"
 
@@ -18,6 +18,7 @@ import (
 	"pkg/addtransport"
 	"github.com/jilieryuyi/grpc-gateway/proto"
 	//"github.com/hashicorp/consul/api"
+	"google.golang.org/grpc/balancer/roundrobin"
 )
 
 type Pool struct{
@@ -104,13 +105,13 @@ func (p *Pool) Get(serviceName string) addservice.Service {
 	)
 	opt := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()))
 
-	r := service.NewResolver(*serv)
-	b := grpc.RoundRobin(r)
+	r := service.NewResolver("service.add", "127.0.0.1:8500")
+	grpc.RoundRobin(r)
+	//grpc.WithBalancer(b)
 
+	balancer := grpc.WithBalancerName(roundrobin.Name)
 	conn, err := grpc.Dial(grpcAddr,
-		grpc.WithInsecure(),
-		grpc.WithTimeout(time.Second), opt,
-		grpc.WithBalancer(b))
+		grpc.WithInsecure(), opt, balancer)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v", err)
 		os.Exit(1)
