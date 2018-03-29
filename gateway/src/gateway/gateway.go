@@ -158,10 +158,18 @@ func main() {
 						}
 					}
 
+					conn, ok = conns[serviceName]
+					if ok && conn != nil {
+						return outCtx, conn, nil
+					}
+
 					//connects[echoEndpoint] = &clientConn{
 					//	client:conn,
 					//}
-					return outCtx, conns[serviceName], err
+					//return nil, nil, status.Errorf(codes.NotFound, "service not found: " + serviceName)
+					return nil, nil, status.Errorf(codes.Unimplemented, "Unknown method")
+
+					//return outCtx, conns[serviceName], err
 					//} else if val, exists := md[":authority"]; exists && val[0] == "api.example.com" {
 					//	conn, err := grpc.DialContext(ctx, "api-service.prod.svc.local", grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proxy.Codec())))//grpc.WithCodec(Codec()))
 					//	return outCtx, conn, err
