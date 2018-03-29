@@ -1,5 +1,6 @@
 grpc proxy gateway
 ------------------
+use consul for register and get services
 support
 -------
 ````

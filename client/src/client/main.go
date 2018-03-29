@@ -103,6 +103,7 @@ func main() {
 	lb := grpc.WithBalancer(b1)
 	fmt.Printf("config grpc\n")
 	opt2 := grpc.WithDefaultCallOptions(grpc.FailFast(false))
+
 	conn, err := grpc.Dial("service.add", grpc.WithInsecure(), opt, opt2, lb)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v", err)
