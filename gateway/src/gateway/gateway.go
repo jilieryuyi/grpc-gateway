@@ -130,15 +130,16 @@ func main() {
 					//index := msn%len(addresses)
 					//ep := addresses[index]
 
-					resl      := service.NewResolver()
-					rr      := grpc.RoundRobin(resl)
-					lb     := grpc.WithBalancer(rr)
+
 
 					conn, ok := conns[serviceName]
 					if ok && conn != nil {
 						return outCtx, conn, nil
 					}
 
+					resl      := service.NewResolver()
+					rr      := grpc.RoundRobin(resl)
+					lb     := grpc.WithBalancer(rr)
 					cs, _ := consulClient.Agent().Services()
 					var err error
 					for _, kc := range cs {
