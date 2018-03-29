@@ -3,19 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="36284916-c978-43a6-bd60-8522ac4cd089" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/client/bin/client" afterPath="$PROJECT_DIR$/client/bin/client" />
-      <change beforePath="$PROJECT_DIR$/client/client" afterPath="$PROJECT_DIR$/client/client" />
-      <change beforePath="$PROJECT_DIR$/client/pkg/darwin_amd64/pkg/addtransport.a" afterPath="$PROJECT_DIR$/client/pkg/darwin_amd64/pkg/addtransport.a" />
-      <change beforePath="$PROJECT_DIR$/client/src/service/service.go" afterPath="$PROJECT_DIR$/client/src/service/service.go" />
-      <change beforePath="$PROJECT_DIR$/dev" afterPath="$PROJECT_DIR$/dev" />
       <change beforePath="$PROJECT_DIR$/grpc/client.go" afterPath="$PROJECT_DIR$/grpc/client.go" />
-      <change beforePath="$PROJECT_DIR$/service/resolver.go" afterPath="$PROJECT_DIR$/service/resolver.go" />
-      <change beforePath="$PROJECT_DIR$/service/watcher.go" afterPath="$PROJECT_DIR$/service/watcher.go" />
-      <change beforePath="$PROJECT_DIR$/services/add/add" afterPath="$PROJECT_DIR$/services/add/add" />
-      <change beforePath="$PROJECT_DIR$/services/add/bin/add" afterPath="$PROJECT_DIR$/services/add/bin/add" />
-      <change beforePath="$PROJECT_DIR$/services/add/pkg/darwin_amd64/pkg/addtransport.a" afterPath="$PROJECT_DIR$/services/add/pkg/darwin_amd64/pkg/addtransport.a" />
-      <change beforePath="$PROJECT_DIR$/services/add/src/add/main.go" afterPath="$PROJECT_DIR$/services/add/src/add/main.go" />
-      <change beforePath="$PROJECT_DIR$/services/add/src/pkg/addtransport/grpc.go" afterPath="$PROJECT_DIR$/services/add/src/pkg/addtransport/grpc.go" />
       <change beforePath="$PROJECT_DIR$/wonaming" afterPath="$PROJECT_DIR$/wonaming" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,43 +15,43 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="watcher.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/service/watcher.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="81" column="26" lean-forward="false" selection-start-line="81" selection-start-column="24" selection-end-line="81" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="client.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/grpc/client.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="74" column="7" lean-forward="false" selection-start-line="74" selection-start-column="7" selection-end-line="74" selection-end-column="7" />
+            <state relative-caret-position="616">
+              <caret line="28" column="36" lean-forward="false" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="36" />
               <folding>
-                <element signature="e#66#289#0" expanded="true" />
+                <element signature="e#66#224#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="addsvc.pb.go" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/go/src/github.com/jilieryuyi/grpc-gateway/proto/addsvc.pb.go">
+      <file leaf-file-name="codec.go" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/go/src/github.com/jilieryuyi/grpc-gateway/proto/codec.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="98">
-              <caret line="172" column="19" lean-forward="false" selection-start-line="172" selection-start-column="19" selection-end-line="172" selection-end-column="19" />
+            <state relative-caret-position="110">
+              <caret line="9" column="5" lean-forward="false" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="call.go" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/call.go">
+      <file leaf-file-name="grpclb.go" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/grpclb.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="206">
-              <caret line="54" column="31" lean-forward="false" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
+            <state relative-caret-position="-38">
+              <caret line="89" column="5" lean-forward="false" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="resolver.go" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/go/src/github.com/jilieryuyi/grpc-gateway/service/resolver.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="148">
+              <caret line="16" column="34" lean-forward="false" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -72,18 +60,18 @@
       <file leaf-file-name="balancer.go" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="61">
-              <caret line="100" column="5" lean-forward="true" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
+            <state relative-caret-position="98">
+              <caret line="137" column="18" lean-forward="false" selection-start-line="137" selection-start-column="18" selection-end-line="137" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="balancer.go" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/go/src/github.com/jilieryuyi/grpc-gateway/grpclb/balancer.go">
+      <file leaf-file-name="clientconn.go" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/clientconn.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="65" column="20" lean-forward="false" selection-start-line="65" selection-start-column="20" selection-end-line="65" selection-end-column="20" />
+            <state relative-caret-position="72">
+              <caret line="227" column="53" lean-forward="false" selection-start-line="227" selection-start-column="43" selection-end-line="227" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -92,41 +80,41 @@
       <file leaf-file-name="balancer_v1_wrapper.go" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer_v1_wrapper.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="292" column="34" lean-forward="false" selection-start-line="292" selection-start-column="34" selection-end-line="292" selection-end-column="34" />
+            <state relative-caret-position="-1960">
+              <caret line="33" column="18" lean-forward="false" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rpc_util.go" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/rpc_util.go">
+      <file leaf-file-name="balancer.go" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer/balancer.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="65">
-              <caret line="251" column="13" lean-forward="false" selection-start-line="251" selection-start-column="5" selection-end-line="251" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="balancer_test.go" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer_test.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="244" column="88" lean-forward="false" selection-start-line="244" selection-start-column="88" selection-end-line="244" selection-end-column="88" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="stream.go" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/stream.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
-              <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+            <state relative-caret-position="830">
+              <caret line="42" column="31" lean-forward="false" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
               <folding>
-                <element signature="e#618#953#0" expanded="true" />
+                <element signature="e#729#908#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="roundrobin.go" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer/roundrobin/roundrobin.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="117">
+              <caret line="42" column="13" lean-forward="false" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="grpclb_test.go" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/grpclb/grpclb_test.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2348">
+              <caret line="576" column="5" lean-forward="false" selection-start-line="576" selection-start-column="5" selection-end-line="576" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -142,9 +130,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>cachedProtoBuffer</find>
-      <find>Add</find>
-      <find>NewGRPCClient</find>
       <find>Codec</find>
       <find>addpb</find>
       <find>services</find>
@@ -162,7 +147,6 @@
       <find>WithBalancerName</find>
       <find>Name</find>
       <find>Resolver</find>
-      <find>naming.Resolver</find>
       <find>grpcAddr</find>
       <find>pb</find>
       <find>.r</find>
@@ -172,6 +156,10 @@
       <find>RPCInfo</find>
       <find>Sum</find>
       <find>failfast</find>
+      <find>balancerWrapperBuilder</find>
+      <find>naming.Resolver</find>
+      <find>Build</find>
+      <find>MyCodec</find>
     </findStrings>
     <dirStrings>
       <dir>$USER_HOME$/go/src/google.golang.org/grpc/transport</dir>
@@ -238,6 +226,7 @@
         <option value="$PROJECT_DIR$/dev" />
         <option value="$PROJECT_DIR$/service/resolver.go" />
         <option value="$PROJECT_DIR$/service/watcher.go" />
+        <option value="$PROJECT_DIR$/service/builder.go" />
         <option value="$PROJECT_DIR$/grpc/client.go" />
       </list>
     </option>
@@ -281,6 +270,11 @@
               <item name="grpc" type="b2602c69:ProjectViewProjectNode" />
               <item name="grpc" type="462c0819:PsiDirectoryNode" />
               <item name="grpc" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="grpc" type="b2602c69:ProjectViewProjectNode" />
+              <item name="grpc" type="462c0819:PsiDirectoryNode" />
+              <item name="proto" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="grpc" type="b2602c69:ProjectViewProjectNode" />
@@ -380,11 +374,11 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.07164634" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22865854" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3445122" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27591464" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -451,60 +445,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/kuberesolver/util.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-269">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/proto/addsvc.pb.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1245">
-          <caret line="211" column="35" lean-forward="false" selection-start-line="211" selection-start-column="28" selection-end-line="211" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grpclb/balancer.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-187">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simple_grpc_demo/api.pb.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="15" column="7" lean-forward="true" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
-          <folding>
-            <element signature="e#246#408#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grpclb/grpclb_balancer_v1/balancer.pb.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1081">
-          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-          <folding>
-            <element signature="e#344#506#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grpclb/cmd/grpc-lb-client/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="44" column="33" lean-forward="false" selection-start-line="44" selection-start-column="33" selection-end-line="44" selection-end-column="33" />
-          <folding>
-            <element signature="e#14#156#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/go/src/github.com/bsm/grpclb/grpclb_balancer_v1/balancer.pb.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -567,14 +507,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="174">
           <caret line="145" column="119" lean-forward="false" selection-start-line="145" selection-start-column="119" selection-end-line="145" selection-end-column="119" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer/roundrobin/roundrobin.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="34" column="25" lean-forward="false" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="25" />
           <folding />
         </state>
       </provider>
@@ -649,22 +581,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer/balancer.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="131" column="5" lean-forward="false" selection-start-line="131" selection-start-column="5" selection-end-line="131" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer_conn_wrappers.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="240" column="18" lean-forward="false" selection-start-line="240" selection-start-column="18" selection-end-line="240" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/resolver_conn_wrapper.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="70">
@@ -677,14 +593,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="125" column="4" lean-forward="false" selection-start-line="125" selection-start-column="4" selection-end-line="125" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/clientconn.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="498" column="26" lean-forward="false" selection-start-line="498" selection-start-column="26" selection-end-line="498" selection-end-column="26" />
           <folding />
         </state>
       </provider>
@@ -745,30 +653,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/go/src/github.com/jilieryuyi/grpc-gateway/service/resolver.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="16" column="17" lean-forward="false" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/service/register.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2979">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/service/resolver.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="57" column="0" lean-forward="true" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wonaming/consul/resolver.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="305">
@@ -809,14 +693,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="61">
-          <caret line="100" column="5" lean-forward="true" selection-start-line="100" selection-start-column="5" selection-end-line="100" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/go/src/github.com/jilieryuyi/grpc-gateway/proto/addsvc.pb.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="98">
@@ -838,7 +714,7 @@
         <state relative-caret-position="42">
           <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
           <folding>
-            <element signature="e#618#953#0" expanded="true" />
+            <element signature="e#618#953#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -859,20 +735,136 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer_conn_wrappers.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="113" column="24" lean-forward="false" selection-start-line="113" selection-start-column="24" selection-end-line="113" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/register.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/src/github.com/grpc/grpc-go/grpclb.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="143" column="13" lean-forward="false" selection-start-line="117" selection-start-column="4" selection-end-line="143" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/resolver.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1008">
+          <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/src/github.com/jilieryuyi/grpc-gateway/service/builder.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="23" column="5" lean-forward="false" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+          <folding>
+            <element signature="e#17#86#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/src/github.com/jilieryuyi/grpc-gateway/service/resolver.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="16" column="34" lean-forward="false" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer_v1_wrapper.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="292" column="34" lean-forward="false" selection-start-line="292" selection-start-column="34" selection-end-line="292" selection-end-column="34" />
+        <state relative-caret-position="-1960">
+          <caret line="33" column="18" lean-forward="false" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/grpclb.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-38">
+          <caret line="89" column="5" lean-forward="false" selection-start-line="89" selection-start-column="5" selection-end-line="89" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/grpclb/grpclb_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2348">
+          <caret line="576" column="5" lean-forward="false" selection-start-line="576" selection-start-column="5" selection-end-line="576" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer/roundrobin/roundrobin.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="42" column="13" lean-forward="false" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/clientconn.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="227" column="53" lean-forward="false" selection-start-line="227" selection-start-column="43" selection-end-line="227" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="98">
+          <caret line="137" column="18" lean-forward="false" selection-start-line="137" selection-start-column="18" selection-end-line="137" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service/builder.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="29" column="31" lean-forward="false" selection-start-line="29" selection-start-column="31" selection-end-line="29" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer/balancer.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="830">
+          <caret line="42" column="31" lean-forward="false" selection-start-line="42" selection-start-column="31" selection-end-line="42" selection-end-column="31" />
+          <folding>
+            <element signature="e#729#908#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/go/src/github.com/jilieryuyi/grpc-gateway/proto/codec.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="9" column="5" lean-forward="false" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/grpc/client.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="74" column="7" lean-forward="false" selection-start-line="74" selection-start-column="7" selection-end-line="74" selection-end-column="7" />
+        <state relative-caret-position="616">
+          <caret line="28" column="36" lean-forward="false" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="36" />
           <folding>
-            <element signature="e#66#289#0" expanded="true" />
+            <element signature="e#66#224#0" expanded="true" />
           </folding>
         </state>
       </provider>
