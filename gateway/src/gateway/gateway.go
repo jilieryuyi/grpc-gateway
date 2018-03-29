@@ -22,8 +22,7 @@ import (
 	"github.com/jilieryuyi/grpc-gateway/service"
 	"strings"
 	consul "github.com/hashicorp/consul/api"
-	"time"
-	"math/rand"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -54,6 +53,12 @@ func main() {
 	{
 		lis, _ := net.Listen("tcp", grpcAddr)
 		//var connects = make(map[string]*clientConn)
+		var conns = make(map[string]*grpc.ClientConn)
+		conf := consul.DefaultConfig()
+		conf.Address = "127.0.0.1:8500"
+		consulClient, _ := consul.NewClient(conf)
+
+
 		//proxy grpc server
 		g.Add(func() error {
 			var director = func(ctx context.Context, fullMethodName string) (context.Context, *grpc.ClientConn, error) {
@@ -69,19 +74,16 @@ func main() {
 				fmt.Printf("serviceName=>%+v\n", serviceName)
 
 
-				var adds = make(map[string][]string)
+				//var adds = make(map[string][]string)
 
-				conf := consul.DefaultConfig()
-				conf.Address = "127.0.0.1:8500"
-				consulClient, _ := consul.NewClient(conf)
-				cs, _ := consulClient.Agent().Services()//Health().Service(cw.target, "", true, q)
-				for key, kc := range cs {
-					fmt.Printf("%v==>%+v", key, *kc)
-					sn := strings.Replace(kc.Service, ".", "", -1)
-					//if serviceName == strings.ToLower(sn) {
-						adds[strings.ToLower(sn)] = append(adds[strings.ToLower(sn)], fmt.Sprintf("%v:%v", kc.Address, kc.Port))
-					//}
-				}
+				//Health().Service(cw.target, "", true, q)
+				//for key, kc := range cs {
+				//	fmt.Printf("%v==>%+v", key, *kc)
+				//	sn := strings.Replace(kc.Service, ".", "", -1)
+				//	//if serviceName == strings.ToLower(sn) {
+				//		adds[strings.ToLower(sn)] = append(adds[strings.ToLower(sn)], fmt.Sprintf("%v:%v", kc.Address, kc.Port))
+				//	//}
+				//}
 				//fmt.Printf("#####%+v, %+v, %+v",cs, meta, err)
 				//if err != nil {
 				//	return nil, 0, err
@@ -122,19 +124,44 @@ func main() {
 					//
 					//fmt.Println("new client")
 
-					addresses := adds[serviceName]
-					r := rand.New(rand.NewSource(time.Now().UnixNano()))
-					msn := r.Intn(1000000)
-					index := msn%len(addresses)
-					ep := addresses[index]
+					//addresses := adds[serviceName]
+					//r := rand.New(rand.NewSource(time.Now().UnixNano()))
+					//msn := r.Intn(1000000)
+					//index := msn%len(addresses)
+					//ep := addresses[index]
 
+					resl      := service.NewResolver()
+					rr      := grpc.RoundRobin(resl)
+					lb     := grpc.WithBalancer(rr)
 
+					conn, ok := conns[serviceName]
+					if ok && conn != nil {
+						return outCtx, conn, nil
+					}
 
-					conn, err := grpc.DialContext(ctx, ep, grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proxy.Codec())), grpc.WithInsecure())//grpc.WithCodec(Codec()))
+					cs, _ := consulClient.Agent().Services()
+					var err error
+					for _, kc := range cs {
+						if kc.Service == "service.gateway" {
+							continue
+						}
+						sn := strings.Replace(kc.Service, ".", "", -1)
+						n, ok := conns[strings.ToLower(sn)]
+						if n != nil && ok {
+							continue
+						}
+						//if serviceName == strings.ToLower(sn) {
+						conns[strings.ToLower(sn)], err = grpc.DialContext(ctx, kc.Service, grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proxy.Codec()), grpc.FailFast(false)), grpc.WithInsecure(), lb) //grpc.WithCodec(Codec()))
+						if err != nil {
+							log.Errorf("%+v", err)
+							conns[strings.ToLower(sn)] = nil
+						}
+					}
+
 					//connects[echoEndpoint] = &clientConn{
 					//	client:conn,
 					//}
-					return outCtx, conn, err
+					return outCtx, conns[serviceName], err
 					//} else if val, exists := md[":authority"]; exists && val[0] == "api.example.com" {
 					//	conn, err := grpc.DialContext(ctx, "api-service.prod.svc.local", grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proxy.Codec())))//grpc.WithCodec(Codec()))
 					//	return outCtx, conn, err
