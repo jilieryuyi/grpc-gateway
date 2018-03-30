@@ -25,16 +25,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var (
-	//这个地址要使用负载均衡和服务发现
-	//echoEndpoint = "localhost:8082"
-)
-
-
-type clientConn struct{
-	client *grpc.ClientConn
-}
-
 func main() {
 
 	// grpc gateway 代理服务
@@ -139,10 +129,10 @@ func main() {
 						return outCtx, conn, nil
 					}
 
-					resl      := service.NewResolver(consulAddress)
-					rr      := grpc.RoundRobin(resl)
+					resl   := service.NewResolver(consulAddress)
+					rr     := grpc.RoundRobin(resl)
 					lb     := grpc.WithBalancer(rr)
-					cs, _ := consulClient.Agent().Services()
+					cs, _  := consulClient.Agent().Services()
 					var err error
 					for _, kc := range cs {
 						if kc.Service == "service.gateway" {
