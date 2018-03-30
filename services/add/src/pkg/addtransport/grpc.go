@@ -13,6 +13,7 @@ import (
 
 	pb "github.com/jilieryuyi/grpc-gateway/proto"
 	"pkg/addendpoint"
+	"strconv"
 )
 
 type grpcServer struct {
@@ -75,7 +76,9 @@ func (s *grpcServer) Concat(ctx oldcontext.Context, req *pb.ConcatRequest) (*pb.
 // gRPC sum request to a user-domain sum request. Primarily useful in a server.
 func decodeGRPCSumRequest(_ context.Context, grpcReq interface{}) (interface{}, error) {
 	req := grpcReq.(*pb.SumRequest)
-	return addendpoint.SumRequest{A: int(req.A), B: int(req.B)}, nil
+	a, _ := strconv.ParseInt(req.A, 10, 64)
+	b, _ := strconv.ParseInt(req.B, 10, 64)
+	return addendpoint.SumRequest{A: int(a), B: int(b)}, nil
 }
 
 // decodeGRPCConcatRequest is a transport/grpc.DecodeRequestFunc that converts a

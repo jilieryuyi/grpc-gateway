@@ -18,8 +18,8 @@ service ServiceAdd {
 
 // The sum request contains two parameters.
 message SumRequest {
-  int64 a = 1;
-  int64 b = 2;
+  string a = 1;
+  string b = 2;
 }
 
 // The sum response contains the result of the calculation.

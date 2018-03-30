@@ -38,13 +38,13 @@ func main() {
 	defer conn.Close()
 	svc := proto.NewServiceAddClient(conn)
 	req := &proto.SumRequest{
-		A:100,
-		B:100,
+		A:"100",
+		B:"100",
 	}
 	v, err := svc.Sum(context.Background(), req, grpc.FailFast(false))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Fprintf(os.Stdout, "%d + %d = %d  %v\n", req.A, req.B, v.V, v.Err)
+	fmt.Fprintf(os.Stdout, "%v + %v = %d  %v\n", req.A, req.B, v.V, v.Err)
 }
