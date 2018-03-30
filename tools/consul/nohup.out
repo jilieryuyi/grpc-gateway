@@ -1,0 +1,50 @@
+bootstrap = true: do not enable unless necessary
+==> Starting Consul agent...
+==> Consul agent running!
+           Version: 'v1.0.2'
+           Node ID: '36951931-108e-3d7b-59ff-f84ce01ba4dc'
+         Node name: 'consul-node-1'
+        Datacenter: 'dc1' (Segment: '<all>')
+            Server: true (Bootstrap: true)
+       Client Addr: [127.0.0.1] (HTTP: 8500, HTTPS: -1, DNS: 8600)
+      Cluster Addr: 127.0.0.1 (LAN: 8301, WAN: 8302)
+           Encrypt: Gossip: false, TLS-Outgoing: false, TLS-Incoming: false
+
+==> Log data will now stream in as it occurs:
+
+    2018/03/30 09:52:51 [INFO] raft: Restored from snapshot 15-532949-1522111814199
+    2018/03/30 09:52:52 [INFO] raft: Initial configuration (index=1): [{Suffrage:Voter ID:36951931-108e-3d7b-59ff-f84ce01ba4dc Address:127.0.0.1:8300}]
+    2018/03/30 09:52:52 [INFO] raft: Node at 127.0.0.1:8300 [Follower] entering Follower state (Leader: "")
+    2018/03/30 09:52:52 [INFO] serf: EventMemberJoin: consul-node-1.dc1 127.0.0.1
+    2018/03/30 09:52:52 [WARN] serf: Failed to re-join any previously known node
+    2018/03/30 09:52:52 [INFO] serf: EventMemberJoin: consul-node-1 127.0.0.1
+    2018/03/30 09:52:52 [INFO] consul: Handled member-join event for server "consul-node-1.dc1" in area "wan"
+    2018/03/30 09:52:52 [WARN] serf: Failed to re-join any previously known node
+    2018/03/30 09:52:52 [INFO] consul: Adding LAN server consul-node-1 (Addr: tcp/127.0.0.1:8300) (DC: dc1)
+    2018/03/30 09:52:52 [WARN] Service name "service.add" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 09:52:52 [WARN] Service name "service.add" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 09:52:52 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 09:52:52 [WARN] Service name "service.add" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 09:52:52 [INFO] agent: Started DNS server 127.0.0.1:8600 (tcp)
+    2018/03/30 09:52:52 [INFO] agent: Started DNS server 127.0.0.1:8600 (udp)
+    2018/03/30 09:52:52 [INFO] agent: Started HTTP server on 127.0.0.1:8500 (tcp)
+    2018/03/30 09:52:52 [INFO] agent: started state syncer
+    2018/03/30 09:52:58 [WARN] raft: Heartbeat timeout from "" reached, starting election
+    2018/03/30 09:52:58 [INFO] raft: Node at 127.0.0.1:8300 [Candidate] entering Candidate state in term 18
+    2018/03/30 09:52:58 [INFO] raft: Election won. Tally: 1
+    2018/03/30 09:52:58 [INFO] raft: Node at 127.0.0.1:8300 [Leader] entering Leader state
+    2018/03/30 09:52:58 [INFO] consul: cluster leadership acquired
+    2018/03/30 09:52:58 [INFO] consul: New leader elected: consul-node-1
+    2018/03/30 09:52:59 [INFO] agent: Synced service "service.add-127.0.0.1-8092"
+    2018/03/30 09:52:59 [INFO] agent: Synced service "service.add-127.0.0.1-8082"
+    2018/03/30 09:52:59 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 09:52:59 [INFO] agent: Synced service "service.add-127.0.0.1-8182"
+    2018/03/30 09:52:59 [INFO] agent: Synced service "service.add-127.0.0.1-8182"
+    2018/03/30 09:52:59 [INFO] agent: Synced check "service.add-127.0.0.1-8082"
+    2018/03/30 09:52:59 [INFO] agent: Deregistered check "service.add-127.0.0.1-8092"
+    2018/03/30 09:52:59 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 09:53:00 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 09:53:02 [INFO] agent: Synced check "service.add-127.0.0.1-8082"
+    2018/03/30 09:54:30 [INFO] agent: Synced check "service.add-127.0.0.1-8082"
+    2018/03/30 09:54:30 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 09:54:30 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
