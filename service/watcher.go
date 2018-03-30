@@ -75,7 +75,7 @@ func (cw *ConsulWatcher) queryConsul(q *consul.QueryOptions) ([]string, uint64, 
 	}
 	addrs := make([]string, 0)
 	for _, s := range cs {
-		fmt.Printf("service: %+v", *s)
+		fmt.Printf("service: %+v\n", *s)
 		// addr should like: 127.0.0.1:8001
 		addrs = append(addrs, fmt.Sprintf("%s:%d", s.Service.Address, s.Service.Port))
 	}

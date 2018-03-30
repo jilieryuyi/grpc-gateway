@@ -23,6 +23,7 @@ import (
 	"github.com/jilieryuyi/grpc-gateway/proto"
 	"pkg/addendpoint"
 	"pkg/addservice"
+	"fmt"
 )
 
 
@@ -124,7 +125,8 @@ func decodeGRPCConcatResponse(_ context.Context, grpcReply interface{}) (interfa
 // user-domain sum request to a gRPC sum request. Primarily useful in a client.
 func encodeGRPCSumRequest(_ context.Context, request interface{}) (interface{}, error) {
 	req := request.(addendpoint.SumRequest)
-	return &proto.SumRequest{A: int64(req.A), B: int64(req.B)}, nil
+	//a ,_ := strconv.ParseInt(req.A, 10, 64)
+	return &proto.SumRequest{A: fmt.Sprintf("%v",req.A), B: fmt.Sprintf("%v", req.B)}, nil
 }
 
 // encodeGRPCConcatRequest is a transport/grpc.EncodeRequestFunc that converts a
