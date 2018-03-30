@@ -56,7 +56,7 @@ func main() {
 		//var connects = make(map[string]*clientConn)
 		var conns = make(map[string]*grpc.ClientConn)
 		conf := consul.DefaultConfig()
-		conf.Address = "127.0.0.1:8500"
+		conf.Address = consulAddress//"127.0.0.1:8500"
 		consulClient, _ := consul.NewClient(conf)
 
 
@@ -204,9 +204,10 @@ func main() {
 		ctx, cancel := context.WithCancel(ctx)
 		defer cancel()
 
-		mux := &proxy.MyMux{}//runtime.NewServeMux()
-		opts := []grpc.DialOption{grpc.WithInsecure()}
-		err = proxy.RegisterHandlerFromEndpoint(ctx, mux, opts)
+		mux := proxy.NewMyMux(ctx, consulAddress)//MyMux{}//runtime.NewServeMux()
+		defer mux.Close()
+		//opts := []grpc.DialOption{grpc.WithInsecure()}
+		//err = proxy.RegisterHandlerFromEndpoint(ctx, mux, opts)
 		if err != nil {
 			fmt.Printf("%v\n", err)
 			return

@@ -13,17 +13,44 @@ import (
 	"net/http"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/grpclog"
 	"fmt"
 	"encoding/json"
-	"google.golang.org/grpc/encoding"
-	"google.golang.org/grpc/encoding/proto"
 	"strings"
+	"github.com/jilieryuyi/grpc-gateway/service"
+	"github.com/jilieryuyi/grpc-gateway/proto"
+	//"time"
+	"github.com/hashicorp/consul/api"
+	log "github.com/sirupsen/logrus"
+	"time"
 )
 
 
-type MyMux struct {
+type connection struct {
 	conn *grpc.ClientConn
+	start int64
+}
+
+type MyMux struct {
+	conns map[string]*connection//*grpc.ClientConn
+	ctx context.Context
+	consulAddress string
+	health *api.Health
+}
+
+func NewMyMux(ctx context.Context,consulAddress string) *MyMux {
+	config := api.DefaultConfig()
+	config.Address = consulAddress
+	client, err := api.NewClient(config)
+	if err != nil {
+		log.Panicf("%v", err)
+	}
+	m := &MyMux{
+		ctx : ctx,
+		conns: make(map[string]*connection),
+		consulAddress:consulAddress,
+		health: client.Health(),
+	}
+	return m
 }
 
 type URI struct {
@@ -31,6 +58,78 @@ type URI struct {
 	serviceName string
 	version string
 	method string
+}
+
+func (p *MyMux) serviceExists(serviceName string) bool {
+	cs, _, err := p.health.Service(serviceName, "", true, nil)
+	if err != nil {
+		log.Errorf("%v", err)
+		return false
+	}
+	//for _, s := range cs {
+	//	s.Service.
+	//	// addr should like: 127.0.0.1:8001
+	//	//addrs = append(addrs, fmt.Sprintf("%s:%d", s.Service.Address, s.Service.Port))
+	//}
+	//return addrs, meta.LastIndex, nil
+	return len(cs) > 0
+}
+
+func (p *MyMux) getGrpcClient(serviceName string) *connection {
+	//address := "localhost:8082"//服务发现的地址
+	//opt1 := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(MyCodec(encoding.GetCodec(proto.Name))))
+	////opt2 := grpc.WithDefaultCallOptions(grpc.CallContentSubtype("proto"))
+	//opts = append(opts, opt1)
+	////opts = append(opts, opt2)
+	////grpc.NewContextWithServerTransportStream()
+	//mux.conn, err = grpc.Dial(address, opts...)
+	conn, ok := p.conns[serviceName]
+	// 使用连接池
+	if ok && conn.conn != nil {
+		fmt.Printf("http proxy use pool\n")
+		return conn//&connection{conn:conn, start:time.Now().Unix()}
+	}
+
+	if ok && conn.conn == nil {
+		if time.Now().Unix() - conn.start <= 3 {
+			fmt.Printf("http proxy use pool 2\n")
+			return conn
+		} else {
+			// 最长时间缓存nil的client 3秒
+			// 防止穿透，一直查询consul
+			delete(p.conns, serviceName)
+		}
+	}
+
+	if !p.serviceExists(serviceName) {
+		conn = &connection{conn:nil, start:time.Now().Unix()}
+		p.conns[serviceName] = conn
+		return conn
+	}
+
+	resl   := service.NewResolver(p.consulAddress)
+	rr     := grpc.RoundRobin(resl)
+	lb     := grpc.WithBalancer(rr)
+
+	//ctx, _:= context.WithTimeout(context.TODO(), time.Second * 1)
+	connn, err := grpc.DialContext(p.ctx, serviceName, grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()), grpc.FailFast(false)), grpc.WithInsecure(), lb)
+	if err != nil {
+		fmt.Printf("http proxy use err nil\n")
+		conn = &connection{conn:nil, start:time.Now().Unix()}
+		p.conns[serviceName] = conn
+		return conn
+	}
+	conn = &connection{conn:connn, start:time.Now().Unix()}//conn
+	p.conns[serviceName] = conn
+	return conn
+}
+
+func (p *MyMux) Close() {
+	for _, v := range p.conns {
+		if v.conn != nil {
+			v.conn.Close()
+		}
+	}
 }
 
 func (uri *URI) getServiceName() string {
@@ -79,7 +178,7 @@ func (p *MyMux) parseParams(req *http.Request) map[string]interface{} {
 	buf := make([]byte, req.ContentLength)
 	n , err := req.Body.Read(buf)
 	if err != nil || n <= 0 {
-		fmt.Printf("req.Body read error: %v", err)
+		fmt.Printf("req.Body read error: %v\n", err)
 		return params
 	}
 	err = json.Unmarshal(buf, &data)
@@ -109,168 +208,20 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Printf("uri: %+v\n", *uri)
+	params := p.parseParams(r)
 
-
-	params := p.parseParams(r)//make(map[string] int)
-	//params["a"] = 100
-	//params["b"] = 200
-
-
-
-	serviceName := uri.getServiceName()
-	method := uri.getMethod()
-
-	fullMethod := fmt.Sprintf("/%v/%v", serviceName, method)
+	fullMethod := fmt.Sprintf("/%v/%v", uri.getServiceName(), uri.getMethod())
 	fmt.Printf("fullMethod=%s\v", fullMethod)
 
+	conn := p.getGrpcClient(uri.serviceName)
+	if conn == nil || conn.conn == nil {
+		w.Write([]byte("connect "+uri.serviceName + " error"))
+		return
+	}
 	var out interface{}
-	err := p.conn.Invoke(context.Background(), fullMethod, params, &out)
-
-	//buf := make([]byte, 1 << 20)
-	//runtime.Stack(buf, true)
-	//fmt.Printf("\n%s\n\n", buf)
-
-
-	//debug.PrintStack()
-	//out := new(SumReply)
-	//err := grpc.Invoke(ctx, "/pb.Add/Sum", in, out, c.cc, opts...)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//return out, nil
+	err := conn.conn.Invoke(context.Background(), fullMethod, params, &out, grpc.FailFast(false))
 	fmt.Printf("return: %+v, error: %+v\n", out, err)
 	b, _:=json.Marshal(out)
 	w.Write(b)
 	return
 }
-
-//var _ codes.Code
-//var _ io.Reader
-//var _ status.Status
-//var _ = runtime.String
-//var _ = utilities.NewDoubleArray
-//
-//func request_Add_Sum_0(ctx context.Context, marshaler runtime.Marshaler, client AddClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-//	var protoReq SumRequest
-//	var metadata runtime.ServerMetadata
-//
-//	var (
-//		val string
-//		ok  bool
-//		err error
-//		_   = err
-//	)
-//
-//	val, ok = pathParams["a"]
-//	if !ok {
-//		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "a")
-//	}
-//
-//	protoReq.A, err = runtime.Int64(val)
-//
-//	if err != nil {
-//		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "a", err)
-//	}
-//
-//	val, ok = pathParams["b"]
-//	if !ok {
-//		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "b")
-//	}
-//
-//	protoReq.B, err = runtime.Int64(val)
-//
-//	if err != nil {
-//		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "b", err)
-//	}
-//
-//	msg, err := client.Sum(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-//	return msg, metadata, err
-//
-//}
-
-
-//type P struct{}
-
-
-// RegisterAddHandlerFromEndpoint is same as RegisterAddHandler but
-// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterHandlerFromEndpoint(ctx context.Context, mux *MyMux, opts []grpc.DialOption) (err error) {
-	address := "localhost:8082"//服务发现的地址
-	opt1 := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(MyCodec(encoding.GetCodec(proto.Name))))
-	//opt2 := grpc.WithDefaultCallOptions(grpc.CallContentSubtype("proto"))
-	opts = append(opts, opt1)
-	//opts = append(opts, opt2)
-	//grpc.NewContextWithServerTransportStream()
-	mux.conn, err = grpc.Dial(address, opts...)
-	if err != nil {
-		return
-	}
-	defer func() {
-		if err != nil {
-			if cerr := mux.conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", address, cerr)
-			}
-			return
-		}
-		go func() {
-			<-ctx.Done()
-			if cerr := mux.conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", address, cerr)
-			}
-		}()
-	}()
-
-	return
-}
-
-// RegisterAddHandler registers the http handlers for service Add to "mux".
-// The handlers forward requests to the grpc endpoint over "conn".
-//func RegisterHandler(ctx context.Context, mux *MyMux, conn *grpc.ClientConn) error {
-//	return RegisterAddHandlerClient(ctx, mux, NewAddClient(conn))
-//}
-
-// RegisterAddHandler registers the http handlers for service Add to "mux".
-// The handlers forward requests to the grpc endpoint over the given implementation of "AddClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "AddClient"
-// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "AddClient" to call the correct interceptors.
-//func RegisterAddHandlerClient(ctx context.Context, mux *runtime.ServeMux, client AddClient) error {
-//	mux.Handle("GET", pattern_Add_Sum_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-//		ctx, cancel := context.WithCancel(req.Context())
-//		defer cancel()
-//		if cn, ok := w.(http.CloseNotifier); ok {
-//			go func(done <-chan struct{}, closed <-chan bool) {
-//				select {
-//				case <-done:
-//				case <-closed:
-//					cancel()
-//				}
-//			}(ctx.Done(), cn.CloseNotify())
-//		}
-//		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-//		rctx, err := runtime.AnnotateContext(ctx, mux, req)
-//		if err != nil {
-//			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-//			return
-//		}
-//		resp, md, err := request_Add_Sum_0(rctx, inboundMarshaler, client, req, pathParams)
-//		ctx = runtime.NewServerMetadataContext(ctx, md)
-//		if err != nil {
-//			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-//			return
-//		}
-//
-//		forward_Add_Sum_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-//
-//	})
-//
-//	return nil
-//}
-//
-//var (
-//	pattern_Add_Sum_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 1, 0, 4, 1, 5, 2}, []string{"sum", "a", "b"}, ""))
-//)
-//
-//var (
-//	forward_Add_Sum_0 = runtime.ForwardResponseMessage
-//)

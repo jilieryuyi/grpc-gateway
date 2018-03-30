@@ -766,3 +766,179 @@ bootstrap = true: do not enable unless necessary
     2018/03/30 20:03:12 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
     2018/03/30 20:04:47 [INFO] agent: Synced check "service.add-127.0.0.1-8082"
     2018/03/30 20:04:47 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:06:41 [INFO] agent: Synced check "service.add-127.0.0.1-8082"
+    2018/03/30 20:06:41 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:07:29 [INFO] agent: Deregistered service "service.add-127.0.0.1-8082"
+    2018/03/30 20:07:29 [INFO] agent: Deregistered check "service.add-127.0.0.1-8082"
+    2018/03/30 20:07:47 [WARN] Service name "service.add" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:07:47 [INFO] agent: Synced service "service.add-127.0.0.1-8182"
+    2018/03/30 20:07:47 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:08:58 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:08:58 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:10:20 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:10:20 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:12:04 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:12:04 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:13:30 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:13:30 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:15:05 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:15:05 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:16:21 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:16:21 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:17:46 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:17:46 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:19:32 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:19:32 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:20:53 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:20:53 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:22:25 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:22:25 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:23:55 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 20:23:55 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:23:58 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:23:58 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:23:58 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:25:40 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:25:40 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:25:40 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:26:44 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:26:44 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:26:44 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:28:38 [INFO] agent: Synced service "service.add-127.0.0.1-8182"
+    2018/03/30 20:28:49 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 20:28:49 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:28:51 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:28:51 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:28:51 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:30:26 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:30:26 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:31:06 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 20:31:06 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:31:36 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:31:36 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:31:36 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:33:21 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 20:33:21 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:33:24 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:33:24 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:33:24 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:34:33 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:34:33 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:35:57 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:35:57 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:37:36 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:37:36 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:38:09 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 20:38:09 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:38:27 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:38:27 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:38:27 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:38:37 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:38:37 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:38:37 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:39:12 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 20:39:12 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:39:17 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:39:17 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:39:17 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:40:35 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:41:52 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 20:42:52 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 20:42:52 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:42:57 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:42:57 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:42:57 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:44:12 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 20:44:12 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:44:21 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 20:44:21 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:44:21 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:44:25 [INFO] consul.fsm: snapshot created in 37.944µs
+    2018/03/30 20:44:25 [INFO] raft: Starting snapshot up to 541142
+    2018/03/30 20:44:25 [INFO] snapshot: Creating new snapshot at /Users/yuyi/Code/go/tools/consul/data/raft/snapshots/18-541142-1522413865088.tmp
+    2018/03/30 20:44:25 [INFO] snapshot: reaping snapshot /Users/yuyi/Code/go/tools/consul/data/raft/snapshots/14-524757-1521720430765
+    2018/03/30 20:44:25 [INFO] raft: Compacting logs from 522710 to 530902
+    2018/03/30 20:44:25 [INFO] raft: Snapshot to 541142 complete
+    2018/03/30 21:40:47 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 21:42:30 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 21:43:34 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 21:45:24 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 21:47:10 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 21:49:06 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 21:50:57 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 21:52:52 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 21:52:59 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 21:52:59 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 21:53:05 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 21:53:05 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 21:53:05 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 21:54:40 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 21:54:40 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 21:54:44 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 21:54:44 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 21:54:44 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 21:55:00 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 21:55:00 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 21:55:00 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 21:56:25 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 21:57:47 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 21:59:06 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:00:36 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:01:37 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:03:25 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 22:03:25 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:03:41 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 22:03:41 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:03:41 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:04:57 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:04:57 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:06:21 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:06:21 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:08:07 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:08:07 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:09:12 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:09:12 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:10:31 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:10:31 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:11:49 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:11:49 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:13:20 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:13:20 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:13:46 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 22:13:46 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:15:41 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:15:41 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:16:02 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 22:16:02 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:16:02 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:16:37 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 22:16:37 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:16:40 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 22:16:40 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:16:40 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:18:15 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 22:18:15 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:18:16 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 22:18:16 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:18:16 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:19:01 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 22:19:01 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:19:12 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 22:19:12 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:19:12 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:20:01 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 22:20:01 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:20:01 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:21:02 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/30 22:21:08 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 22:21:08 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:21:08 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:21:23 [WARN] agent: Check "service.gateway-127.0.0.1-8081" missed TTL, is now critical
+    2018/03/30 22:21:23 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:21:26 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 22:21:26 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:21:26 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:21:42 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
+    2018/03/30 22:21:42 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:21:42 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 22:22:59 [INFO] agent: Synced check "service.add-127.0.0.1-8182"

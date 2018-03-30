@@ -33,5 +33,6 @@ func (cr *ConsulResolver) Resolve(target string) (naming.Watcher, error) {
 		cr: cr,
 		cc: cr.client,
 		target: target,
+		health:cr.client.Health(),
 	}, nil
 }

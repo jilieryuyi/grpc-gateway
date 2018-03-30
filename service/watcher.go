@@ -5,6 +5,8 @@ import (
 	"time"
 	consul "github.com/hashicorp/consul/api"
 	"google.golang.org/grpc/naming"
+	//"google.golang.org/grpc/status"
+	//"google.golang.org/grpc/codes"
 )
 
 // ConsulWatcher is the implementation of grpc.naming.Watcher
@@ -19,6 +21,7 @@ type ConsulWatcher struct {
 	// after check: 1 - deleted  2 - nothing  3 - new added
 	addrs []string
 	target string
+	health *consul.Health
 }
 
 // Close do nonthing
@@ -33,6 +36,7 @@ func (cw *ConsulWatcher) Next() ([]*naming.Update, error) {
 	// If no addrs, need to watch consul
 	if cw.addrs == nil {
 		// must return addrs to balancer, use ticker to query consul till data gotten
+		fmt.Printf("query consul service\n")
 		addrs, li, _ := cw.queryConsul(nil)
 		// got addrs, return
 		if len(addrs) != 0 {
@@ -65,7 +69,7 @@ func (cw *ConsulWatcher) Next() ([]*naming.Update, error) {
 // queryConsul is helper function to query consul
 func (cw *ConsulWatcher) queryConsul(q *consul.QueryOptions) ([]string, uint64, error) {
 	// query consul
-	cs, meta, err := cw.cc.Health().Service(cw.target, "", true, q)
+	cs, meta, err := cw.health.Service(cw.target, "", true, q)
 	if err != nil {
 		return nil, 0, err
 	}

@@ -33,7 +33,7 @@ func main() {
 
 	// 这里选项后续会放到配置文件
 	grpcListenIp   := "0.0.0.0" //grpc监听ip
-	grpcListenPort := 8082 //grpc监听端口
+	grpcListenPort := 8182 //grpc监听端口
 	grpcServiceIp  := "127.0.0.1" //grpc通过这个ip对外服务，可以自由配置外网内网，配合监听ip使用
 	serviceName    := "service.add"
 	consulAddress  := "127.0.0.1:8500"
