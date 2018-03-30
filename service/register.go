@@ -3,12 +3,7 @@ package service
 import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
-	"os"
-	"os/signal"
-	"strconv"
-	"syscall"
 	"time"
-
 	consul "github.com/hashicorp/consul/api"
 	"sync"
 )
@@ -33,24 +28,34 @@ type Service struct {
 
 type ServiceOption func(s *Service)
 
+// set ttl
 func Ttl(ttl int) ServiceOption {
 	return func(s *Service){
 		s.Ttl = ttl
 	}
 }
 
+// set interval
 func Interval(interval time.Duration) ServiceOption {
 	return func(s *Service){
 		s.Interval = interval
 	}
 }
 
+// set service ip
 func ServiceIp(serviceIp string) ServiceOption {
 	return func(s *Service){
 		s.ServiceIp = serviceIp
 	}
 }
 
+// new a service
+// name: service name
+// host: service host like 0.0.0.0 or 127.0.0.1
+// port: service port, like 9998
+// consulAddress: consul service address, like 127.0.0.1:8500
+// opts: ServiceOption, like ServiceIp("127.0.0.1")
+// return new service pointer
 func NewService(name string, host string, port int,
 	consulAddress string, opts ...ServiceOption) *Service {
 	sev := &Service{
@@ -83,19 +88,18 @@ func NewService(name string, host string, port int,
 	}
 	sev.ServiceID = fmt.Sprintf("%s-%s-%d", name, ip, port)
 	sev.agent = sev.client.Agent()
-
 	return sev
 }
 
 func (sev *Service) Deregister() error {
 	err := sev.agent.ServiceDeregister(sev.ServiceID)
 	if err != nil {
-		log.Errorf("wonaming: deregister service error: ", err.Error())
+		log.Errorf("deregister service error: ", err.Error())
 		return err
 	}
 	err = sev.agent.CheckDeregister(sev.ServiceID)
 	if err != nil {
-		log.Println("wonaming: deregister check error: ", err.Error())
+		log.Println("deregister check error: ", err.Error())
 	}
 	return err
 }
@@ -110,16 +114,6 @@ func (sev *Service) Register() error {
 		return nil
 	}
 	sev.lock.Unlock()
-
-	go func() {
-		ch := make(chan os.Signal, 1)
-		signal.Notify(ch, syscall.SIGTERM, syscall.SIGINT, syscall.SIGKILL, syscall.SIGHUP, syscall.SIGQUIT)
-		x := <-ch
-		log.Println("wonaming: receive signal: ", x)
-		sev.Deregister()
-		s, _ := strconv.Atoi(fmt.Sprintf("%d", x))
-		os.Exit(s)
-	}()
 	// routine to update ttl
 	go func() {
 		ticker := time.NewTicker(sev.Interval)
@@ -127,11 +121,10 @@ func (sev *Service) Register() error {
 			<-ticker.C
 			err := sev.agent.UpdateTTL(sev.ServiceID, "", "passing")
 			if err != nil {
-				log.Println("wonaming: update ttl of service error: ", err.Error())
+				log.Println("update ttl of service error: ", err.Error())
 			}
 		}
 	}()
-
 	// initial register service
 	ip := sev.ServiceHost
 	if ip == "0.0.0.0" {
@@ -145,14 +138,23 @@ func (sev *Service) Register() error {
 	}
 	err := sev.agent.ServiceRegister(regis)
 	if err != nil {
-		return fmt.Errorf("wonaming: initial register service '%s' host to consul error: %s", sev.ServiceName, err.Error())
+		return fmt.Errorf("initial register service '%s' host to consul error: %s", sev.ServiceName, err.Error())
 	}
 	// initial register service check
 	check := consul.AgentServiceCheck{TTL: fmt.Sprintf("%ds", sev.Ttl), Status: "passing"}
-	err = sev.agent.CheckRegister(&consul.AgentCheckRegistration{ID: sev.ServiceID,
-	Name: sev.ServiceName, ServiceID: sev.ServiceID, AgentServiceCheck: check})
+	err = sev.agent.CheckRegister(&consul.AgentCheckRegistration{
+		ID: sev.ServiceID,
+		Name: sev.ServiceName,
+		ServiceID: sev.ServiceID,
+		AgentServiceCheck: check,
+		})
 	if err != nil {
-		return fmt.Errorf("wonaming: initial register service check to consul error: %s", err.Error())
+		return fmt.Errorf("initial register service check to consul error: %s", err.Error())
 	}
 	return nil
+}
+
+
+func (sev *Service) Close() {
+	sev.Deregister()
 }

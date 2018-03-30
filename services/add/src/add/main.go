@@ -46,6 +46,7 @@ func main() {
 	//将被注册到consul
 	sev := service.NewService(serviceName, grpcListenIp, grpcListenPort, consulAddress, service.ServiceIp(grpcServiceIp))
 	sev.Register()
+	defer sev.Close()
 
 	// Create a single logger, which we'll use and give to other components.
 	var logger log.Logger

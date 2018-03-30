@@ -18,7 +18,11 @@ func main() {
 	opt    := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()))
 	r      := service.NewResolver()
 	b      := grpc.RoundRobin(r)
+	//wrapper
+	//没有api可以初始化balancerWrapperBuilder，只有WithBalancer
+	//虽然被Deprecated，但是也只能用WithBalancer了
 	lb     := grpc.WithBalancer(b)
+	//lb := grpc.WithBalancerName("wrapper")
 
 	conn, err := grpc.DialContext(ctx, "service.gateway", grpc.WithInsecure(), opt, lb)
 	if err != nil {
