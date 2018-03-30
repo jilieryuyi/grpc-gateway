@@ -47,6 +47,7 @@ func main() {
 	serviceName := "service.gateway"
 	sev := service.NewService(serviceName, grpcListenIp, grpcListenPort, consulAddress, service.ServiceIp(grpcServiceIp))
 	sev.Register()
+	defer sev.Close()
 
 	grpcAddr := fmt.Sprintf("%v:%v", grpcListenIp, grpcListenPort)//":8081"
 	var g group.Group
@@ -101,8 +102,8 @@ func main() {
 
 
 
-				fmt.Printf("%+v", fullMethodName)
-				fmt.Printf("%+v", ctx)
+				fmt.Printf("%+v\n", fullMethodName)
+				fmt.Printf("%+v\n", ctx)
 				// Make sure we never forward internal services.
 				//if strings.HasPrefix(fullMethodName, "/com.example.internal.") {
 				//	return nil, nil, status.Errorf(codes.Unimplemented, "Unknown method")
@@ -134,10 +135,11 @@ func main() {
 
 					conn, ok := conns[serviceName]
 					if ok && conn != nil {
+						fmt.Printf("use pool: %v\n", serviceName)
 						return outCtx, conn, nil
 					}
 
-					resl      := service.NewResolver()
+					resl      := service.NewResolver(consulAddress)
 					rr      := grpc.RoundRobin(resl)
 					lb     := grpc.WithBalancer(rr)
 					cs, _ := consulClient.Agent().Services()

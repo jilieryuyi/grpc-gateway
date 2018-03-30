@@ -1,1 +1,2 @@
-grpc client
+test grpc client
+use go-kit

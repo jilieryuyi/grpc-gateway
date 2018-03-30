@@ -1,3 +1,5 @@
+simple grpc server and client
+
 build proto
 -----------
 ````

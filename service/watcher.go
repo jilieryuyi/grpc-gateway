@@ -48,7 +48,7 @@ func (cw *ConsulWatcher) Next() ([]*naming.Update, error) {
 			time.Sleep(1 * time.Second)
 			continue
 		}
-		fmt.Printf("new service found: %+v, %+v", addrs, li)
+		fmt.Printf("service change: %+v, %+v\n", addrs, li)
 		// generate updates
 		updates := genUpdates(cw.addrs, addrs)
 		// update addrs & last index
@@ -83,10 +83,12 @@ func genUpdates(a, b []string) []*naming.Update {
 	deleted := diff(a, b)
 	for _, addr := range deleted {
 		update := &naming.Update{Op: naming.Delete, Addr: addr}
+		fmt.Printf("delete service: %s\n", addr)
 		updates = append(updates, update)
 	}
 	added := diff(b, a)
 	for _, addr := range added {
+		fmt.Printf("new service: %s\n", addr)
 		update := &naming.Update{Op: naming.Add, Addr: addr}
 		updates = append(updates, update)
 	}

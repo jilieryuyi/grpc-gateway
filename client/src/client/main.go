@@ -18,9 +18,10 @@ import (
 	"pkg/addservice"
 	"pkg/addtransport"
 	"github.com/jilieryuyi/grpc-gateway/proto"
-	//"github.com/hashicorp/consul/api"
 )
 
+// go-kit客户端实现
+// 使用consul服务发现，支持负载均衡
 
 func main() {
 	//serviceName := "service.add"
@@ -39,7 +40,7 @@ func main() {
 	//分布式链路追踪
 	zipkinV2URL    := "http://localhost:9411/api/v2/spans"
 	zipkinV1URL    := "http://localhost:9411/api/v1/spans"
-
+	consulAddress  := "127.0.0.1:8500"
 
 	// This is a demonstration client, which supports multiple tracers.
 	// Your clients will probably just use one tracer.
@@ -96,15 +97,17 @@ func main() {
 		svc addservice.Service
 		err error
 	)
-	opt := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()))
 
-	r1 := service.NewResolver()
-	b1 := grpc.RoundRobin(r1)
-	lb := grpc.WithBalancer(b1)
-	fmt.Printf("config grpc\n")
-	opt2 := grpc.WithDefaultCallOptions(grpc.FailFast(false))
+	//以下部分实现了grpc负载均衡
+	resolver := service.NewResolver(consulAddress)
+	robin    := grpc.RoundRobin(resolver)
+	lb       := grpc.WithBalancer(robin)
+	//这个选项用于等待consul完成服务发现初始化
+	cp       := grpc.WithDefaultCallOptions(grpc.FailFast(false))
+	//这个选项用于设置grpc的编码解码实现
+	opt      := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()))
 
-	conn, err := grpc.Dial("service.add", grpc.WithInsecure(), opt, opt2, lb)
+	conn, err := grpc.Dial("service.gateway", grpc.WithInsecure(), opt, cp, lb)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v", err)
 		os.Exit(1)
