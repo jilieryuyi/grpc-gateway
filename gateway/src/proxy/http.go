@@ -83,27 +83,31 @@ func (p *MyMux) getGrpcClient(serviceName string) *connection {
 	////opts = append(opts, opt2)
 	////grpc.NewContextWithServerTransportStream()
 	//mux.conn, err = grpc.Dial(address, opts...)
+
+	//clear timeout conn
+	// 最长时间缓存nil的client 3秒
+	// 防止穿透，一直查询consul
+	for key, v := range p.conns {
+		if v.conn == nil && time.Now().Unix()-v.start > 3 {
+			delete(p.conns, key)
+		}
+	}
+
 	conn, ok := p.conns[serviceName]
 	// 使用连接池
 	if ok && conn.conn != nil {
 		fmt.Printf("http proxy use pool\n")
-		return conn//&connection{conn:conn, start:time.Now().Unix()}
+		return conn
 	}
 
 	if ok && conn.conn == nil {
-		if time.Now().Unix() - conn.start <= 3 {
-			fmt.Printf("http proxy use pool 2\n")
-			return conn
-		} else {
-			// 最长时间缓存nil的client 3秒
-			// 防止穿透，一直查询consul
-			delete(p.conns, serviceName)
-		}
+		fmt.Printf("http proxy use pool 2\n")
+		return conn
 	}
 
+	conn = &connection{conn:nil, start:time.Now().Unix()}
+	p.conns[serviceName] = conn
 	if !p.serviceExists(serviceName) {
-		conn = &connection{conn:nil, start:time.Now().Unix()}
-		p.conns[serviceName] = conn
 		return conn
 	}
 
@@ -111,16 +115,12 @@ func (p *MyMux) getGrpcClient(serviceName string) *connection {
 	rr     := grpc.RoundRobin(resl)
 	lb     := grpc.WithBalancer(rr)
 
-	//ctx, _:= context.WithTimeout(context.TODO(), time.Second * 1)
-	connn, err := grpc.DialContext(p.ctx, serviceName, grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()), grpc.FailFast(false)), grpc.WithInsecure(), lb)
+	gconn, err := grpc.DialContext(p.ctx, serviceName, grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()), grpc.FailFast(false)), grpc.WithInsecure(), lb)
 	if err != nil {
 		fmt.Printf("http proxy use err nil\n")
-		conn = &connection{conn:nil, start:time.Now().Unix()}
-		p.conns[serviceName] = conn
 		return conn
 	}
-	conn = &connection{conn:connn, start:time.Now().Unix()}//conn
-	p.conns[serviceName] = conn
+	conn.conn = gconn
 	return conn
 }
 
