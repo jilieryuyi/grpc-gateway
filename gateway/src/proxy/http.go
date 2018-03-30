@@ -22,6 +22,7 @@ import (
 	"github.com/hashicorp/consul/api"
 	log "github.com/sirupsen/logrus"
 	"time"
+	"google.golang.org/grpc/metadata"
 )
 
 
@@ -219,7 +220,44 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var out interface{}
-	err := conn.conn.Invoke(context.Background(), fullMethod, params, &out, grpc.FailFast(false))
+
+	md        := metadata.MD{}
+	username  := ""
+	password  := ""
+	isset     := false
+
+	if r.URL.User != nil {
+		password, isset = r.URL.User.Password()
+	}
+
+	md["request_uri"]      = []string{r.RequestURI}
+	md["version"]          = []string{uri.version}
+	md["server"]           = []string{"service.gateway"}
+	md["method"]           = []string{r.Method}
+	md["opaque"]           = []string{r.URL.Opaque}
+	md["user.username"]    = []string{username}
+	md["user.password"]    = []string{password}
+	md["user.passwordset"] = []string{fmt.Sprintf("%v", isset)}
+	md["host"]             = []string{r.URL.Host}
+	md["path"]             = []string{r.URL.Path}
+	md["rawpath"]          = []string{r.URL.RawPath}
+	md["forcequery"]       = []string{fmt.Sprintf("%v",r.URL.ForceQuery)}
+	md["rawquery"]         = []string{r.URL.RawQuery}
+	md["fragment"]         = []string{r.URL.Fragment}
+	md["remoteaddr"]       = []string{r.RemoteAddr}
+
+	for key, v := range r.Header {
+		md[key] = append(md[key], v...)
+	}
+	header := grpc.Header(&md)
+
+	trailerData := metadata.MD{}
+	for key, v := range r.Trailer {
+		trailerData[key] = append(trailerData[key], v...)
+	}
+	trailer := grpc.Trailer(&trailerData)
+
+	err := conn.conn.Invoke(context.Background(), fullMethod, params, &out, grpc.FailFast(false), header, trailer)
 	fmt.Printf("return: %+v, error: %+v\n", out, err)
 	b, _:=json.Marshal(out)
 	w.Write(b)
