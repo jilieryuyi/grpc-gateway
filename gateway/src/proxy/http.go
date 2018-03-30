@@ -10,29 +10,15 @@ It translates gRPC into RESTful JSON APIs.
 */
 
 import (
-	//"io"
 	"net/http"
-
-	//"github.com/golang/protobuf/proto"
-	//"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	//"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	//"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
-	//"google.golang.org/grpc/status"
-	//"net"
-	//"fmt"
-	//"github.com/gorilla/mux"
-	"net/url"
-	//"encoding/json"
 	"fmt"
-	//"encoding/json"
 	"encoding/json"
-	//"runtime"
 	"google.golang.org/grpc/encoding"
 	"google.golang.org/grpc/encoding/proto"
-
+	"strings"
 )
 
 
@@ -40,65 +26,105 @@ type MyMux struct {
 	conn *grpc.ClientConn
 }
 
-type Args struct {
-	Form url.Values
-	Method string
-	Url *url.URL
-	Header http.Header
+type URI struct {
+	packageName string
+	serviceName string
+	version string
+	method string
+}
+
+func (uri *URI) getServiceName() string {
+	st := strings.Split(uri.serviceName, ".")
+	serviceName := ""
+	for _, v := range st {
+		serviceName += strings.ToUpper(v[:1]) + v[1:]
+	}
+	return fmt.Sprintf("%v.%v", uri.packageName, serviceName)
+}
+
+func (uri *URI) getMethod() string {
+	return strings.ToUpper(uri.method[:1]) + uri.method[1:]
+}
+
+func (p *MyMux) parseURL(url string) *URI {
+	// /proto/service.add/v1/sum
+	st := strings.Split(url, "/")
+	if len(st) < 5 {
+		return nil
+	}
+	return &URI{
+		packageName:st[1],
+		serviceName:st[2],
+		version:st[3],
+		method:st[4],
+	}
+}
+
+
+func (p *MyMux) parseParams(req *http.Request) map[string]interface{} {
+	req.ParseForm()
+	//if strings.ToLower(req.Header.Get("Content-Type")) == "application/json" {
+	// 处理传统意义上表单的参数，这里添加body内传输的json解析支持
+	// 解析后的值默认追加到表单内部
+
+	params := make(map[string]interface{})
+	for key, v := range req.Form {
+		params[key] = v[0]
+	}
+	if req.ContentLength <= 0 {
+		return params
+	}
+
+	var data map[string]interface{}
+	buf := make([]byte, req.ContentLength)
+	n , err := req.Body.Read(buf)
+	if err != nil || n <= 0 {
+		fmt.Printf("req.Body read error: %v", err)
+		return params
+	}
+	err = json.Unmarshal(buf, &data)
+	if err != nil || data == nil {
+		return params
+	}
+	for k, dv := range data {
+		params[k] = dv
+	}
+	return params
 }
 
 func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	//if r.URL.Path == "/" {
-	//	return
-	//}
-	//http.NotFound(w, r)
-	//endpoint := "localhost:8082"
-	// todo 这里应该用连接池
-	//args := Args{
-	//	Header:r.Header,
-	//	Method:r.Method,
-	//	Url:r.URL,
-	//	Form:r.Form,
-	//}
 
-	//grpc.NewClientStream()
-	//var unaryStreamDesc = &grpc.StreamDesc{ServerStreams: false, ClientStreams: false}
-	//
-	//cs, err := p.conn.NewStream(context.Background(), unaryStreamDesc, "/pb.Add/Sum")
-	//if err != nil {
-	//	fmt.Printf("%v\n", err)
-	//	return
-	//}
-	////cs.SendMsg()
-	//if err := cs.SendMsg(req); err != nil {
-	//	//if !cs.c.failFast && cs.attempt.s.Unprocessed() && firstAttempt {
-	//	//	// TODO: Add a field to header for grpc-transparent-retry-attempts
-	//	//	firstAttempt = false
-	//	//	continue
-	//	//}
-	//	fmt.Printf("%v\n", err)
-	//	return// err
-	//}
-	//if err := cs.RecvMsg(reply); err != nil {
-	//	//if !cs.c.failFast && cs.attempt.s.Unprocessed() && firstAttempt {
-	//	//	// TODO: Add a field to header for grpc-transparent-retry-attempts
-	//	//	firstAttempt = false
-	//	//	continue
-	//	//}
-	//	//return err
-	//}
-	//return// nil
+	// url like:
+	// http://localhost:8084/proto/service.add/v1/sum
+	// package name is: proto
+	// service name is: service.add
+	// version is: v1
+	// method is: sum
+	fmt.Printf("%+v\n", *r)
+	fmt.Printf("url: %+v\n", *r.URL)
 
-	params := make(map[string] int)
-	params["a"] = 100
-	params["b"] = 200
+	uri := p.parseURL(r.URL.Path)
+	if uri == nil {
+		w.Write([]byte("url path error, url path must be format by: /{packagename}/{servicename}/{version}/{method}"))
+		return
+	}
+	fmt.Printf("uri: %+v\n", *uri)
+
+
+	params := p.parseParams(r)//make(map[string] int)
+	//params["a"] = 100
+	//params["b"] = 200
 
 
 
+	serviceName := uri.getServiceName()
+	method := uri.getMethod()
 
+	fullMethod := fmt.Sprintf("/%v/%v", serviceName, method)
+	fmt.Printf("fullMethod=%s\v", fullMethod)
 
 	var out interface{}
-	err := p.conn.Invoke(context.Background(), "/pb.Add/Sum", params, &out)
+	err := p.conn.Invoke(context.Background(), fullMethod, params, &out)
 
 	//buf := make([]byte, 1 << 20)
 	//runtime.Stack(buf, true)
