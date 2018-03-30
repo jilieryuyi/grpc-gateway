@@ -1,0 +1,5 @@
+pkg/*
+vendor/pkg/*
+.idea/
+bin/logs/*
+/tools/*/*.out

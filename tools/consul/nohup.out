@@ -762,3 +762,5 @@ bootstrap = true: do not enable unless necessary
     2018/03/30 20:00:00 [WARN] Service name "service.gateway" will not be discoverable via DNS due to invalid characters. Valid characters include all alpha-numerics and dashes.
     2018/03/30 20:00:00 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"
     2018/03/30 20:00:00 [INFO] agent: Synced check "service.gateway-127.0.0.1-8081"
+    2018/03/30 20:03:12 [INFO] agent: Synced service "service.add-127.0.0.1-8082"
+    2018/03/30 20:03:12 [INFO] agent: Synced service "service.gateway-127.0.0.1-8081"

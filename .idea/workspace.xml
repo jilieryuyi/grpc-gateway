@@ -2,18 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="36284916-c978-43a6-bd60-8522ac4cd089" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/examples/grpc/client.go" afterPath="$PROJECT_DIR$/examples/grpc/client.go" />
-      <change beforePath="$PROJECT_DIR$/gateway/bin/gateway" afterPath="$PROJECT_DIR$/gateway/bin/gateway" />
-      <change beforePath="$PROJECT_DIR$/gateway/gateway" afterPath="$PROJECT_DIR$/gateway/gateway" />
-      <change beforePath="$PROJECT_DIR$/proto/addsvc.pb.go" afterPath="$PROJECT_DIR$/proto/addsvc.pb.go" />
-      <change beforePath="$PROJECT_DIR$/proto/addsvc.proto" afterPath="$PROJECT_DIR$/proto/addsvc.proto" />
-      <change beforePath="$PROJECT_DIR$/service/watcher.go" afterPath="$PROJECT_DIR$/service/watcher.go" />
-      <change beforePath="$PROJECT_DIR$/services/add/add" afterPath="$PROJECT_DIR$/services/add/add" />
-      <change beforePath="$PROJECT_DIR$/services/add/bin/add" afterPath="$PROJECT_DIR$/services/add/bin/add" />
-      <change beforePath="$PROJECT_DIR$/services/add/pkg/darwin_amd64/pkg/addtransport.a" afterPath="$PROJECT_DIR$/services/add/pkg/darwin_amd64/pkg/addtransport.a" />
-      <change beforePath="$PROJECT_DIR$/services/add/src/add/main.go" afterPath="$PROJECT_DIR$/services/add/src/add/main.go" />
-      <change beforePath="$PROJECT_DIR$/services/add/src/pkg/addtransport/grpc.go" afterPath="$PROJECT_DIR$/services/add/src/pkg/addtransport/grpc.go" />
       <change beforePath="$PROJECT_DIR$/tools/consul/nohup.out" afterPath="$PROJECT_DIR$/tools/consul/nohup.out" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,18 +20,6 @@
               <caret line="12" column="1" lean-forward="false" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
               <folding>
                 <element signature="e#15#120#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="decode.go" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/go/src/github.com/jilieryuyi/grpc-gateway/json/decode.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1124">
-              <caret line="365" column="22" lean-forward="false" selection-start-line="365" selection-start-column="22" selection-end-line="365" selection-end-column="22" />
-              <folding>
-                <marker date="1522409465429" expanded="true" signature="25616:25620" ph="..." />
               </folding>
             </state>
           </provider>
@@ -79,14 +55,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="client.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="client.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/grpc/client.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
+            <state relative-caret-position="136">
               <caret line="48" column="35" lean-forward="false" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
               <folding>
                 <element signature="e#165#323#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="88">
+              <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -250,6 +236,7 @@
         <option value="$PROJECT_DIR$/services/add/src/add/main.go" />
         <option value="$PROJECT_DIR$/service/watcher.go" />
         <option value="$PROJECT_DIR$/examples/grpc/client.go" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -259,7 +246,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="1438" />
     <option name="y" value="46" />
     <option name="width" value="1633" />
@@ -294,66 +281,19 @@
             <path>
               <item name="grpc-gateway" type="b2602c69:ProjectViewProjectNode" />
               <item name="grpc-gateway" type="462c0819:PsiDirectoryNode" />
-              <item name="examples" type="462c0819:PsiDirectoryNode" />
+              <item name="tools" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="grpc-gateway" type="b2602c69:ProjectViewProjectNode" />
               <item name="grpc-gateway" type="462c0819:PsiDirectoryNode" />
-              <item name="examples" type="462c0819:PsiDirectoryNode" />
-              <item name="grpc" type="462c0819:PsiDirectoryNode" />
+              <item name="tools" type="462c0819:PsiDirectoryNode" />
+              <item name="consul" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="grpc-gateway" type="b2602c69:ProjectViewProjectNode" />
               <item name="grpc-gateway" type="462c0819:PsiDirectoryNode" />
-              <item name="proto" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grpc-gateway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grpc-gateway" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grpc-gateway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grpc-gateway" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grpc-gateway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grpc-gateway" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-              <item name="add" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grpc-gateway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grpc-gateway" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-              <item name="add" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grpc-gateway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grpc-gateway" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-              <item name="add" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="add" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grpc-gateway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grpc-gateway" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-              <item name="add" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pkg" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grpc-gateway" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grpc-gateway" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
-              <item name="add" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pkg" type="462c0819:PsiDirectoryNode" />
-              <item name="addtransport" type="462c0819:PsiDirectoryNode" />
+              <item name="tools" type="462c0819:PsiDirectoryNode" />
+              <item name="zipkin" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -403,7 +343,7 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1438" y="46" width="1633" height="785" extended-state="1" />
+    <frame x="1438" y="46" width="1633" height="785" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.194846" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
@@ -414,7 +354,7 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26956522" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5782609" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -481,13 +421,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/go/src/google.golang.org/grpc/balancer/base/base.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="46" column="5" lean-forward="false" selection-start-line="46" selection-start-column="5" selection-end-line="46" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/go/src/github.com/grpc/grpc-go/balancer/roundrobin/roundrobin.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -898,11 +831,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/examples/grpc/client.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
+        <state relative-caret-position="136">
           <caret line="48" column="35" lean-forward="false" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="35" />
           <folding>
             <element signature="e#165#323#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="14" lean-forward="false" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
+          <folding />
         </state>
       </provider>
     </entry>
