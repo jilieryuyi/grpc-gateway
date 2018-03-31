@@ -18,6 +18,7 @@ import (
 	"github.com/jilieryuyi/grpc-gateway/protocol/service"
 
 	"time"
+	"github.com/openzipkin/zipkin-go/reporter"
 )
 
 // go-kit客户端实现
@@ -30,6 +31,8 @@ type Pool struct {
 	zipkinV2URL string//    := "http://localhost:9411/api/v2/spans"
 	zipkinV1URL string//    := "http://localhost:9411/api/v1/spans"
 	consulAddress string//  := "127.0.0.1:8500"
+	reporter reporter.Reporter
+	collector zipkinot.Collector
 }
 
 func NewPool(zipkinV2URL string, zipkinV1URL string, consulAddress string) *Pool {
@@ -41,21 +44,26 @@ func NewPool(zipkinV2URL string, zipkinV1URL string, consulAddress string) *Pool
 	return p
 }
 
+func (p *Pool) Close() {
+	p.reporter.Close()
+	p.collector.Close()
+}
+
 func (p *Pool) getOtTracer() stdopentracing.Tracer {
+	var err error
 	var otTracer stdopentracing.Tracer
 	{
-		collector, err := zipkinot.NewHTTPCollector(p.zipkinV1URL)
+		p.collector, err = zipkinot.NewHTTPCollector(p.zipkinV1URL)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
 			os.Exit(1)
 		}
-		defer collector.Close()
 		var (
 			debug       = false
 			hostPort    = "localhost:0"
 			serviceName = "addsvc-cli"
 		)
-		recorder := zipkinot.NewRecorder(collector, debug, hostPort, serviceName)
+		recorder := zipkinot.NewRecorder(p.collector, debug, hostPort, serviceName)
 		otTracer, err = zipkinot.NewTracer(recorder)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
@@ -73,12 +81,11 @@ func (p *Pool) getZipkinTracer() *zipkin.Tracer {
 			hostPort      = "" // if host:port is unknown we can keep this empty
 			serviceName   = "addsvc-cli"
 			useNoopTracer = false// (zipkinV2URL == "")
-			reporter      = zipkinhttp.NewReporter(p.zipkinV2URL)
 		)
-		defer reporter.Close()
+		p.reporter      = zipkinhttp.NewReporter(p.zipkinV2URL)
 		zEP, _ := zipkin.NewEndpoint(serviceName, hostPort)
 		zipkinTracer, err = zipkin.NewTracer(
-			reporter, zipkin.WithLocalEndpoint(zEP), zipkin.WithNoopTracer(useNoopTracer),
+			p.reporter, zipkin.WithLocalEndpoint(zEP), zipkin.WithNoopTracer(useNoopTracer),
 		)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "unable to create zipkin tracer: %s\n", err.Error())

@@ -16,6 +16,7 @@ func main() {
 	consulAddress  := "127.0.0.1:8500"
 
 	pool := NewPool(zipkinV2URL, zipkinV1URL, consulAddress)
+	defer pool.Close()
 	svc  := pool.getService()
 	fmt.Printf("=====\n")
 	a    := 100
