@@ -19,6 +19,8 @@ import (
 	"github.com/go-kit/kit/tracing/zipkin"
 
 	"github.com/jilieryuyi/grpc-gateway/protocol/service"
+	"github.com/jilieryuyi/grpc-gateway/tools"
+	"fmt"
 )
 
 // Set collects all of the endpoints that compose an add service. It's meant to
@@ -61,6 +63,9 @@ func New(svc service.Service, logger log.Logger, duration metrics.Histogram, otT
 // Sum implements the service interface, so Set may be used as a service.
 // This is primarily useful in the context of a client library.
 func (s Set) Sum(ctx context.Context, a, b int) (int, error) {
+	h := tools.NewHeader(ctx)
+	fmt.Printf("\n\nheader: %+v\n\n", *h)
+
 	resp, err := s.SumEndpoint(ctx, SumRequest{A: a, B: b})
 	if err != nil {
 		return 0, err

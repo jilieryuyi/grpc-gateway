@@ -106,8 +106,8 @@ func main() {
 	{
 		// Business-level metrics.
 		ints = prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: "service",
-			Subsystem: serviceName,//"addsvc",
+			Namespace: "example",
+			Subsystem: "addsvc",
 			Name:      "integers_summed",
 			Help:      "Total count of integers summed via the Sum method.",
 		}, []string{})
@@ -122,8 +122,8 @@ func main() {
 	{
 		// Endpoint-level metrics.
 		duration = prometheus.NewSummaryFrom(stdprometheus.SummaryOpts{
-			Namespace: "service",
-			Subsystem: serviceName,//"addsvc",
+			Namespace: "example",
+			Subsystem: "addsvc",
 			Name:      "request_duration_seconds",
 			Help:      "Request duration in seconds.",
 		}, []string{"method", "success"})

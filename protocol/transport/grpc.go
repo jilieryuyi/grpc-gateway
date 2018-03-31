@@ -23,6 +23,7 @@ import (
 	"google.golang.org/grpc"
 	"github.com/go-kit/kit/endpoint"
 	"fmt"
+	"github.com/jilieryuyi/grpc-gateway/tools"
 	"errors"
 )
 
@@ -146,6 +147,9 @@ func NewGRPCClient(conn *grpc.ClientConn, otTracer stdopentracing.Tracer, zipkin
 }
 
 func (s *grpcServer) Sum(ctx oldcontext.Context, req *pb.SumRequest) (*pb.SumReply, error) {
+	fmt.Printf("%v\n\n", ctx)
+	h := tools.NewHeader(ctx)
+	fmt.Printf("\n\nheader: %+v\n\n", *h)
 	_, rep, err := s.sum.ServeGRPC(ctx, req)
 	if err != nil {
 		return nil, err

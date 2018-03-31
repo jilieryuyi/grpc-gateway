@@ -166,10 +166,27 @@ func (p *MyMux) parseParams(req *http.Request) map[string]interface{} {
 	//if strings.ToLower(req.Header.Get("Content-Type")) == "application/json" {
 	// 处理传统意义上表单的参数，这里添加body内传输的json解析支持
 	// 解析后的值默认追加到表单内部
+	// 支持post、get、json
 
 	params := make(map[string]interface{})
+	log.Printf("form:%+v\n\n", req.Form)
+	var err error
 	for key, v := range req.Form {
-		params[key] = v[0]
+		var data map[string]interface{}
+		err = json.Unmarshal([]byte(key), &data)
+		if err == nil {
+			for kk,vv := range data {
+				params[kk] = vv
+			}
+		} else {
+			if len(v) > 0 {
+				fmt.Printf("1 param: %v=>%v\n", key, v[0])
+				params[key] = v[0]
+			} else {
+				fmt.Printf("1 param: %v=>\"\"\n", key)
+				params[key] = ""
+			}
+		}
 	}
 	if req.ContentLength <= 0 {
 		return params
@@ -177,16 +194,18 @@ func (p *MyMux) parseParams(req *http.Request) map[string]interface{} {
 
 	var data map[string]interface{}
 	buf := make([]byte, req.ContentLength)
-	n , err := req.Body.Read(buf)
-	if err != nil || n <= 0 {
-		fmt.Printf("req.Body read error: %v\n", err)
-		return params
-	}
+	req.Body.Read(buf)
+	fmt.Printf("body: %+v\n" , string(buf))
+	//if err != nil || n <= 0 {
+	//	fmt.Printf("req.Body read error: %v\n", err)
+	//	return params
+	//}
 	err = json.Unmarshal(buf, &data)
 	if err != nil || data == nil {
 		return params
 	}
 	for k, dv := range data {
+		fmt.Printf("param: %v=>%v\n", k, dv)
 		params[k] = dv
 	}
 	return params
@@ -205,17 +224,20 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	uri := p.parseURL(r.URL.Path)
 	if uri == nil {
+		w.WriteHeader(404)
 		w.Write([]byte("url path error, url path must be format by: /{packagename}/{servicename}/{version}/{method}"))
 		return
 	}
 	fmt.Printf("uri: %+v\n", *uri)
 	params := p.parseParams(r)
+	fmt.Printf("send params: %+v\n", params)
 
 	fullMethod := fmt.Sprintf("/%v/%v", uri.getServiceName(), uri.getMethod())
 	fmt.Printf("fullMethod=%s\v", fullMethod)
 
 	conn := p.getGrpcClient(uri.serviceName)
 	if conn == nil || conn.conn == nil {
+		w.WriteHeader(404)
 		w.Write([]byte("connect "+uri.serviceName + " error"))
 		return
 	}
@@ -235,31 +257,64 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	md["server"]           = []string{"service.gateway"}
 	md["method"]           = []string{r.Method}
 	md["opaque"]           = []string{r.URL.Opaque}
-	md["user.username"]    = []string{username}
-	md["user.password"]    = []string{password}
-	md["user.passwordset"] = []string{fmt.Sprintf("%v", isset)}
+	md["username"]         = []string{username}
+	md["password"]         = []string{password}
+	md["password_set"]     = []string{fmt.Sprintf("%v", isset)}
 	md["host"]             = []string{r.URL.Host}
 	md["path"]             = []string{r.URL.Path}
-	md["rawpath"]          = []string{r.URL.RawPath}
-	md["forcequery"]       = []string{fmt.Sprintf("%v",r.URL.ForceQuery)}
-	md["rawquery"]         = []string{r.URL.RawQuery}
+	md["raw_path"]         = []string{r.URL.RawPath}
+	md["force_query"]      = []string{fmt.Sprintf("%v", r.URL.ForceQuery)}
+	md["raw_query"]        = []string{r.URL.RawQuery}
 	md["fragment"]         = []string{r.URL.Fragment}
-	md["remoteaddr"]       = []string{r.RemoteAddr}
+	md["remote_addr"]      = []string{r.RemoteAddr}
 	md["is_form_http"]     = []string{"1"}
 	for key, v := range r.Header {
 		md[key] = append(md[key], v...)
 	}
-	header := grpc.Header(&md)
 
-	trailerData := metadata.MD{}
-	for key, v := range r.Trailer {
-		trailerData[key] = append(trailerData[key], v...)
-	}
-	trailer := grpc.Trailer(&trailerData)
+	fmt.Printf("\n\nsend header: %+v\n\n", md)
 
-	err := conn.conn.Invoke(context.Background(), fullMethod, params, &out, grpc.FailFast(false), header, trailer)
+	//header := grpc.Header(&md)
+
+	//trailerData := metadata.MD{}
+	//for key, v := range r.Trailer {
+	//	trailerData[key] = append(trailerData[key], v...)
+	//}
+	//trailerData["trailer_test"] = []string{"1"}
+	//trailer := grpc.Trailer(&trailerData)
+	//fmt.Printf("\n\nsend trailer: %+v\n\n", trailerData)
+
+	ctx:= context.Background()
+	ctx = metadata.NewIncomingContext(ctx, md)
+
+	//grpc.SendHeader(ctx, md)
+
+	var mdoh = metadata.MD{}
+	var mdot = metadata.MD{}
+	opt1 := grpc.Header(&mdoh)
+	opt2 := grpc.Trailer(&mdot)
+
+
+	err := conn.conn.Invoke(ctx, fullMethod, params, &out, grpc.FailFast(false), opt1, opt2)
+
+	fmt.Printf("ctx: %+v\n\n", ctx)
+
+	//grpc.SendHeader(ctx, md)
 	fmt.Printf("return: %+v, error: %+v\n", out, err)
+	fmt.Printf("out header: %+v\n", mdoh)
+	fmt.Printf("out trailer: %+v\n", mdot)
+
 	b, _:=json.Marshal(out)
+	for k, v := range mdoh {
+		if len(v) > 0 {
+			for _, sv := range v {
+				fmt.Printf("set header: %v=%v\n", k, sv)
+				w.Header().Set(k, sv)
+			}
+		}
+	}
+	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(200)
 	w.Write(b)
 	return
 }

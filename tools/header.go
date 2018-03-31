@@ -15,14 +15,14 @@ type Header struct {
 	//opaque          string
 	//username   string
 	//password   string
-	//passwordset bool
+	//password_set bool
 	//host            string
 	//path            string
-	//rawpath         string
-	//forcequery      string
-	//rawquery        string
+	//raw_path         string
+	//force_query      string
+	//raw_query        string
 	//fragment        string
-	//remoteaddr      string
+	//remote_addr      string
 	//is_form_http bool
 	ctx context.Context
 
