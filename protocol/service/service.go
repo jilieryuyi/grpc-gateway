@@ -57,9 +57,10 @@ const (
 )
 
 func (s basicService) Sum(ctx context.Context, a, b int) (int, error) {
+	fmt.Printf("call Sum\n\n")
 	h := tools.NewHeader(ctx)
-	fmt.Printf("%+v\n",ctx)
-	fmt.Printf("\n\nbasicService header: %+v\n\n", *h)
+	fmt.Printf("============%+v\n",ctx)
+	fmt.Printf("\n\n===========basicService header: %+v\n\n", *h)
 
 	if a == 0 && b == 0 {
 		return 0, ErrTwoZeroes

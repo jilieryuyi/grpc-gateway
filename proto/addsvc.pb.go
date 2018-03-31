@@ -23,7 +23,6 @@ import _ "google.golang.org/genproto/googleapis/api/annotations"
 import (
 	context "golang.org/x/net/context"
 	grpc "google.golang.org/grpc"
-	"github.com/jilieryuyi/grpc-gateway/tools"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -170,10 +169,6 @@ func NewServiceAddClient(cc *grpc.ClientConn) ServiceAddClient {
 }
 
 func (c *serviceAddClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumReply, error) {
-	fmt.Printf("###############3%+v\n\n", ctx)
-	h := tools.NewHeader(ctx)
-	fmt.Printf("\n\nserviceAddClient recv header: %+v\n\n", *h)
-
 	out := new(SumReply)
 	err := grpc.Invoke(ctx, "/proto.ServiceAdd/Sum", in, out, c.cc, opts...)
 	if err != nil {
@@ -205,7 +200,6 @@ func RegisterServiceAddServer(s *grpc.Server, srv ServiceAddServer) {
 }
 
 func _ServiceAdd_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	fmt.Printf("###############3%+v\n\n", ctx)
 	in := new(SumRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -218,7 +212,6 @@ func _ServiceAdd_Sum_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/proto.ServiceAdd/Sum",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		fmt.Printf("###############3%+v\n\n", ctx)
 		return srv.(ServiceAddServer).Sum(ctx, req.(*SumRequest))
 	}
 	return interceptor(ctx, in, info, handler)

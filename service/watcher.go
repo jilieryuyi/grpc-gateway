@@ -38,6 +38,7 @@ func (cw *ConsulWatcher) Next() ([]*naming.Update, error) {
 		// must return addrs to balancer, use ticker to query consul till data gotten
 		fmt.Printf("query consul service\n")
 		addrs, li, _ := cw.queryConsul(nil)
+		fmt.Printf("service: %+v\n", addrs)
 		// got addrs, return
 		if len(addrs) != 0 {
 			cw.addrs = addrs

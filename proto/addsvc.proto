@@ -8,6 +8,15 @@ service ServiceAdd {
   // Sums two integers.
   rpc Sum (SumRequest) returns (SumReply) {
     option (google.api.http) = {
+            // 这里的url组成形式必须是
+            // /{package}/{serviceName}/{version}/{method}
+            // package是包名称，这里的package proto;包名就是proto
+            // serviceName服务名称，grpc server端注册的服务名称
+            // 服务名称必须与service ServiceAdd这里的ServiceAdd名称保持一致
+            // ServiceAdd使用大写开头的驼峰命名方式
+            // service.add使用的则是全部小写由.相连的方式
+            // v1为版本号，任意的合法命名理论上均不限制
+            // sum方法名称为小写，必须与rpc Sum 的Sum保持一致
 			get: "/proto/service.add/v1/sum"
 		};
   }

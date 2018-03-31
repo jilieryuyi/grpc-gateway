@@ -11,6 +11,5 @@
 # See also
 #  https://github.com/grpc/grpc-go/tree/master/examples
 
-##protoc addsvc.proto --go_out=plugins=grpc:.
 protoc -I/usr/local/include -I. -I/Users/yuyi/go/src -I/Users/yuyi/go/src/github.com/googleapis/googleapis --go_out=plugins=grpc:. *.proto
 protoc -I/usr/local/include -I. -I/Users/yuyi/go/src -I/Users/yuyi/go/src/github.com/googleapis/googleapis --grpc-gateway_out=logtostderr=true:. *.proto
