@@ -7,16 +7,15 @@ import (
 	_ "time"
 
 	"google.golang.org/grpc"
-
 	stdopentracing "github.com/opentracing/opentracing-go"
 	zipkin "github.com/openzipkin/zipkin-go"
 	zipkinot "github.com/openzipkin/zipkin-go-opentracing"
 	zipkinhttp "github.com/openzipkin/zipkin-go/reporter/http"
 
 	"github.com/go-kit/kit/log"
-	"github.com/jilieryuyi/grpc-gateway/service"
-	"pkg/addservice"
-	"pkg/addtransport"
+	consul "github.com/jilieryuyi/grpc-gateway/service"
+	"github.com/jilieryuyi/grpc-gateway/protocol/service"
+	"github.com/jilieryuyi/grpc-gateway/protocol/transport"
 	"github.com/jilieryuyi/grpc-gateway/proto"
 )
 
@@ -94,12 +93,12 @@ func main() {
 	// This is a demonstration client, which supports multiple transports.
 	// Your clients will probably just define and stick with 1 transport.
 	var (
-		svc addservice.Service
+		svc service.Service
 		err error
 	)
 
 	//以下部分实现了grpc负载均衡
-	resolver := service.NewResolver(consulAddress)
+	resolver := consul.NewResolver(consulAddress)
 	robin    := grpc.RoundRobin(resolver)
 	lb       := grpc.WithBalancer(robin)
 	//这个选项用于等待consul完成服务发现初始化
@@ -114,8 +113,11 @@ func main() {
 	}
 	fmt.Printf("dial grpc\n")
 
-	defer conn.Close()
-	svc = addtransport.NewGRPCClient(conn, otTracer, zipkinTracer, log.NewNopLogger())
+	//defer conn.Close()
+	//s := conn.NewStream()
+	//s.Trailer()
+
+	svc = transport.NewGRPCClient(conn, otTracer, zipkinTracer, log.NewNopLogger())
 	fmt.Printf("new client\n")
 
 	if err != nil {

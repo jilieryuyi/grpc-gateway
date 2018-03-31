@@ -245,7 +245,7 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	md["rawquery"]         = []string{r.URL.RawQuery}
 	md["fragment"]         = []string{r.URL.Fragment}
 	md["remoteaddr"]       = []string{r.RemoteAddr}
-
+	md["is_form_http"]     = []string{"1"}
 	for key, v := range r.Header {
 		md[key] = append(md[key], v...)
 	}

@@ -23,10 +23,10 @@ import (
 	kitgrpc "github.com/go-kit/kit/transport/grpc"
 
 	addpb "github.com/jilieryuyi/grpc-gateway/proto"
-	"pkg/addendpoint"
-	"pkg/addservice"
-	"pkg/addtransport"
-	"github.com/jilieryuyi/grpc-gateway/service"
+	"github.com/jilieryuyi/grpc-gateway/protocol/endpoint"
+	"github.com/jilieryuyi/grpc-gateway/protocol/service"
+	"github.com/jilieryuyi/grpc-gateway/protocol/transport"
+	consul "github.com/jilieryuyi/grpc-gateway/service"
 )
 
 func main() {
@@ -44,7 +44,7 @@ func main() {
 
 	//这是一个服务
 	//将被注册到consul
-	sev := service.NewService(serviceName, grpcListenIp, grpcListenPort, consulAddress, service.ServiceIp(grpcServiceIp))
+	sev := consul.NewService(serviceName, grpcListenIp, grpcListenPort, consulAddress, consul.ServiceIp(grpcServiceIp))
 	sev.Register()
 	defer sev.Close()
 
@@ -70,7 +70,7 @@ func main() {
 			var (
 				debug       = false
 				hostPort    = fmt.Sprintf("%v:%v", grpcListenIp, grpcListenPort)
-				serviceName = "addsvc"
+				//serviceName = "addsvc"
 			)
 			recorder := zipkinot.NewRecorder(collector, debug, hostPort, serviceName)
 			tracer, err = zipkinot.NewTracer(recorder)
@@ -85,7 +85,7 @@ func main() {
 		var (
 			err           error
 			hostPort      = fmt.Sprintf("%v:%v", grpcListenIp, grpcListenPort)//"localhost:80"
-			serviceName   = "addsvc"
+			//serviceName   = "addsvc"
 			useNoopTracer = false//(zipkinV2URL == "")
 			reporter      = zipkinhttp.NewReporter(zipkinV2URL)
 		)
@@ -106,8 +106,8 @@ func main() {
 	{
 		// Business-level metrics.
 		ints = prometheus.NewCounterFrom(stdprometheus.CounterOpts{
-			Namespace: "example",
-			Subsystem: "addsvc",
+			Namespace: "service",
+			Subsystem: serviceName,//"addsvc",
 			Name:      "integers_summed",
 			Help:      "Total count of integers summed via the Sum method.",
 		}, []string{})
@@ -122,8 +122,8 @@ func main() {
 	{
 		// Endpoint-level metrics.
 		duration = prometheus.NewSummaryFrom(stdprometheus.SummaryOpts{
-			Namespace: "example",
-			Subsystem: "addsvc",
+			Namespace: "service",
+			Subsystem: serviceName,//"addsvc",
 			Name:      "request_duration_seconds",
 			Help:      "Request duration in seconds.",
 		}, []string{"method", "success"})
@@ -137,9 +137,9 @@ func main() {
 	// the interfaces that the transports expect. Note that we're not binding
 	// them to ports or anything yet; we'll do that next.
 	var (
-		addService        = addservice.New(logger, ints, chars)
-		endpoints      = addendpoint.New(addService, logger, duration, tracer, zipkinTracer)
-		grpcServer     = addtransport.NewGRPCServer(endpoints, tracer, zipkinTracer, logger)
+		addService     = service.New(logger, ints, chars)
+		endpoints      = endpoint.New(addService, logger, duration, tracer, zipkinTracer)
+		grpcServer     = transport.NewGRPCServer(endpoints, tracer, zipkinTracer, logger)
 	)
 
 	// Now we're to the part of the func main where we want to start actually
