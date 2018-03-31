@@ -96,13 +96,8 @@ func (p *MyMux) getGrpcClient(serviceName string) *connection {
 
 	conn, ok := p.conns[serviceName]
 	// 使用连接池
-	if ok && conn.conn != nil {
+	if ok {
 		fmt.Printf("http proxy use pool\n")
-		return conn
-	}
-
-	if ok && conn.conn == nil {
-		fmt.Printf("http proxy use pool 2\n")
 		return conn
 	}
 
