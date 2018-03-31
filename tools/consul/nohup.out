@@ -1764,3 +1764,4 @@ bootstrap = true: do not enable unless necessary
     2018/03/31 16:54:13 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
     2018/03/31 16:55:18 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
     2018/03/31 16:56:45 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
+    2018/03/31 16:58:19 [INFO] agent: Synced check "service.add-127.0.0.1-8182"
