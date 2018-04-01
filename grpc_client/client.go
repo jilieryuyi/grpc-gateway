@@ -13,6 +13,7 @@ import (
 	"os"
 	"google.golang.org/grpc"
 	"github.com/jilieryuyi/grpc-gateway/proto"
+	"google.golang.org/grpc/metadata"
 )
 
 func main() {
@@ -28,7 +29,11 @@ func main() {
 		A:"100",
 		B:"100",
 	}
-	v, err := svc.Sum(context.Background(), req, grpc.FailFast(false))
+
+	md := metadata.MD{}
+	md["hahahahahah"]= []string{"hahahahahah"}
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
+	v, err := svc.Sum(ctx, req, grpc.FailFast(false))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)

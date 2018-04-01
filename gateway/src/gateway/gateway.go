@@ -99,6 +99,7 @@ func main() {
 				//	return nil, nil, status.Errorf(codes.Unimplemented, "Unknown method")
 				//}
 				md, ok := metadata.FromIncomingContext(ctx)
+				fmt.Printf("===>md: %+v", md)
 				// Copy the inbound metadata explicitly.
 				outCtx, _ := context.WithCancel(ctx)
 				outCtx = metadata.NewOutgoingContext(outCtx, md.Copy())

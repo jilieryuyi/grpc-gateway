@@ -19,12 +19,13 @@ type connection struct {
 	conn *grpc.ClientConn
 	start int64
 }
-
+type HttpHeader struct{}
 type MyMux struct {
 	conns map[string]*connection
 	ctx context.Context
 	consulAddress string
 	health *api.Health
+	defaultConn *grpc.ClientConn
 }
 
 func NewMyMux(ctx context.Context,consulAddress string) *MyMux {
@@ -34,11 +35,13 @@ func NewMyMux(ctx context.Context,consulAddress string) *MyMux {
 	if err != nil {
 		log.Panicf("%v", err)
 	}
+	c := proto.NewClient(consulAddress)
 	m := &MyMux{
 		ctx : ctx,
 		conns: make(map[string]*connection),
 		consulAddress:consulAddress,
 		health: client.Health(),
+		defaultConn:c.GetGrpcClient(),
 	}
 	return m
 }
@@ -95,12 +98,32 @@ func (p *MyMux) getGrpcClient(serviceName string) *connection {
 	resl   := service.NewResolver(p.consulAddress)
 	rr     := grpc.RoundRobin(resl)
 	lb     := grpc.WithBalancer(rr)
-	gconn, err := grpc.DialContext(p.ctx, serviceName, grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()), grpc.FailFast(false)), grpc.WithInsecure(), lb)
+	opt    := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()), grpc.FailFast(false))
+	gconn, err := grpc.DialContext(p.ctx, serviceName, opt, grpc.WithInsecure(), lb)
 	if err != nil {
 		fmt.Printf("http proxy use err nil\n")
 		return conn
 	}
 	conn.conn = gconn
+
+
+	//ctx, _ := context.WithTimeout(context.Background(), time.Second * 3)
+	//opt    := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(Codec()))
+	//r      := service.NewResolver(c.consulAddress)
+	//b      := grpc.RoundRobin(r)
+	////wrapper
+	////没有api可以初始化balancerWrapperBuilder，只有WithBalancer
+	////虽然被Deprecated，但是也只能用WithBalancer了
+	//lb     := grpc.WithBalancer(b)
+	//
+	//var err error
+	//c.client, err = grpc.DialContext(ctx, "service.gateway", grpc.WithInsecure(), opt, lb)
+	//if err != nil {
+	//	fmt.Fprintf(os.Stderr, "error: %v", err)
+	//	os.Exit(1)
+	//}
+
+
 	return conn
 }
 
@@ -235,6 +258,8 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	md["remote_addr"]      = []string{r.RemoteAddr}
 	md["is_form_http"]     = []string{"1"}
 	for key, v := range r.Header {
+		//grpc的header key只能是小写，大写会报错
+		key = strings.ToLower(key)
 		md[key] = append(md[key], v...)
 	}
 
@@ -252,13 +277,17 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// 这里的header发送不过去，待解决
 	ctx:= context.Background()
-	ctx = metadata.NewIncomingContext(ctx, md)
+	ctx = metadata.NewOutgoingContext(ctx, md)
 	//这个参数用于接收grpc回传的header和trailer
 	var mdoh = metadata.MD{}
 	var mdot = metadata.MD{}
 	opt1 := grpc.Header(&mdoh)
 	opt2 := grpc.Trailer(&mdot)
-	err := conn.conn.Invoke(ctx, fullMethod, params, &out, grpc.FailFast(false), opt1, opt2)
+
+	//ctx=context.WithValue(ctx, HttpHeader{}, md)
+	//err := grpc.Invoke(ctx, fullMethod, params, &out, conn.conn,  grpc.FailFast(false), opt1, opt2)
+	err := conn.conn.Invoke(ctx, fullMethod, params, &out, opt1, opt2) //grpc.FailFast(false)
+	//grpc.SendHeader(ctx, md)
 	fmt.Printf("ctx: %+v\n\n", ctx)
 	fmt.Printf("return: %+v, error: %+v\n", out, err)
 	fmt.Printf("out header: %+v\n", mdoh)

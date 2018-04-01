@@ -30,7 +30,7 @@ func NewClient(consulAddress string) *Client{
 
 func (c *Client) init() {
 	ctx, _ := context.WithTimeout(context.Background(), time.Second * 3)
-	opt    := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(Codec()))
+	opt    := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(Codec()), grpc.FailFast(false))
 	r      := service.NewResolver(c.consulAddress)
 	b      := grpc.RoundRobin(r)
 	//wrapper
