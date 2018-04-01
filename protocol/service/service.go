@@ -69,7 +69,7 @@ func (s basicService) Sum(ctx context.Context, a, b int) (int, error) {
 	//send headers
 	h.Set("hello", "world").
 		Set("server", "service.add").
-		ServerSend()
+		Send()
 	return a + b, nil
 }
 

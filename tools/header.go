@@ -145,7 +145,7 @@ func (h *Header) Set(key interface{}, value ...interface{}) *Header {
 	return h
 }
 //server端发送header
-func (h *Header) ServerSend() {
+func (h *Header) Send() {
 	grpc.SendHeader(h.ctx, h.md)
 }
 // client端是通过context发送header的
