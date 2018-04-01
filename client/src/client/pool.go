@@ -95,26 +95,7 @@ func (p *Pool) getZipkinTracer() *zipkin.Tracer {
 	return zipkinTracer
 }
 
-
 func (p *Pool) getGrpcClient() *grpc.ClientConn {
-	//以下部分实现了grpc负载均衡
-	//resolver := consul.NewResolver(p.consulAddress)
-	//robin    := grpc.RoundRobin(resolver)
-	//lb       := grpc.WithBalancer(robin)
-	////这个选项用于等待consul完成服务发现初始化
-	//cp       := grpc.WithDefaultCallOptions(grpc.FailFast(false))
-	////这个选项用于设置grpc的编码解码实现
-	//opt      := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()))
-	//
-	//conn, err := grpc.Dial("service.gateway", grpc.WithInsecure(), opt, cp, lb)
-	//if err != nil {
-	//	fmt.Fprintf(os.Stderr, "error: %v", err)
-	//	os.Exit(1)
-	//}
-	//fmt.Printf("dial grpc\n")
-	//return conn
-
-
 	ctx, _ := context.WithTimeout(context.Background(), time.Second * 3)
 	opt    := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(proto.Codec()), grpc.FailFast(false))
 	r      := consul.NewResolver(p.consulAddress)
@@ -131,16 +112,7 @@ func (p *Pool) getGrpcClient() *grpc.ClientConn {
 	return conn
 }
 
-
 func (p *Pool) getService() service.Service {
 	svc := transport.NewGRPCClient(p.getGrpcClient(), p.getOtTracer(), p.getZipkinTracer(), log.NewNopLogger())
-	//a := 100
-	//b := 100
-	//v, err := svc.Sum(context.Background(), int(a), int(b))
-	//if err != nil {
-	//	fmt.Fprintf(os.Stderr, "error: %v\n", err)
-	//	os.Exit(1)
-	//}
-	//fmt.Fprintf(os.Stdout, "%d + %d = %d\n", a, b, v)
 	return svc
 }

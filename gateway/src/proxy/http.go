@@ -19,13 +19,11 @@ type connection struct {
 	conn *grpc.ClientConn
 	start int64
 }
-type HttpHeader struct{}
 type MyMux struct {
 	conns map[string]*connection
 	ctx context.Context
 	consulAddress string
 	health *api.Health
-	defaultConn *grpc.ClientConn
 }
 
 func NewMyMux(ctx context.Context,consulAddress string) *MyMux {
@@ -35,13 +33,11 @@ func NewMyMux(ctx context.Context,consulAddress string) *MyMux {
 	if err != nil {
 		log.Panicf("%v", err)
 	}
-	c := proto.NewClient(consulAddress)
 	m := &MyMux{
 		ctx : ctx,
 		conns: make(map[string]*connection),
 		consulAddress:consulAddress,
 		health: client.Health(),
-		defaultConn:c.GetGrpcClient(),
 	}
 	return m
 }
@@ -105,25 +101,6 @@ func (p *MyMux) getGrpcClient(serviceName string) *connection {
 		return conn
 	}
 	conn.conn = gconn
-
-
-	//ctx, _ := context.WithTimeout(context.Background(), time.Second * 3)
-	//opt    := grpc.WithDefaultCallOptions(grpc.CallCustomCodec(Codec()))
-	//r      := service.NewResolver(c.consulAddress)
-	//b      := grpc.RoundRobin(r)
-	////wrapper
-	////没有api可以初始化balancerWrapperBuilder，只有WithBalancer
-	////虽然被Deprecated，但是也只能用WithBalancer了
-	//lb     := grpc.WithBalancer(b)
-	//
-	//var err error
-	//c.client, err = grpc.DialContext(ctx, "service.gateway", grpc.WithInsecure(), opt, lb)
-	//if err != nil {
-	//	fmt.Fprintf(os.Stderr, "error: %v", err)
-	//	os.Exit(1)
-	//}
-
-
 	return conn
 }
 
@@ -134,8 +111,6 @@ func (p *MyMux) Close() {
 		}
 	}
 }
-
-
 
 func (p *MyMux) parseURL(url string) *URI {
 	// /proto/service.add/v1/sum
