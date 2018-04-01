@@ -46,7 +46,7 @@ cd gateway && ./build.sh
 cd services/add && ./build.sh
 ./add
 ````
-5、grpc客户端访问测试
+5、grpc客户端访问测试（grpc穿透）
 ````
 ##go-kit客户端
 cd client && ./build.sh
