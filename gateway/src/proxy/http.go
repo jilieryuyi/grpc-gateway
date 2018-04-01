@@ -13,6 +13,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"time"
 	"google.golang.org/grpc/metadata"
+	"github.com/jilieryuyi/grpc-gateway/tools"
 )
 
 type connection struct {
@@ -205,9 +206,9 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("connect "+uri.serviceName + " error"))
 		return
 	}
-	var out interface{}
 
-	md        := metadata.MD{}
+	header := tools.NewHeader(context.Background())
+	//md        := metadata.MD{}
 	username  := ""
 	password  := ""
 	isset     := false
@@ -216,39 +217,33 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		password, isset = r.URL.User.Password()
 	}
 
-	md["request_uri"]      = []string{r.RequestURI}
-	md["version"]          = []string{uri.version}
-	md["server"]           = []string{"service.gateway"}
-	md["method"]           = []string{r.Method}
-	md["opaque"]           = []string{r.URL.Opaque}
-	md["username"]         = []string{username}
-	md["password"]         = []string{password}
-	md["password_set"]     = []string{fmt.Sprintf("%v", isset)}
-	md["host"]             = []string{r.URL.Host}
-	md["path"]             = []string{r.URL.Path}
-	md["raw_path"]         = []string{r.URL.RawPath}
-	md["force_query"]      = []string{fmt.Sprintf("%v", r.URL.ForceQuery)}
-	md["raw_query"]        = []string{r.URL.RawQuery}
-	md["fragment"]         = []string{r.URL.Fragment}
-	md["remote_addr"]      = []string{r.RemoteAddr}
-	md["is_form_http"]     = []string{"1"}
+	header.Set("request_uri", r.RequestURI).
+	Set("version", uri.version).
+	Set("server", "service.gateway").
+	Set("method", r.Method).
+	Set("opaque", r.URL.Opaque).
+	Set("username", username).
+	Set("password", password).
+	Set("password_set", isset).
+	Set("host",r.URL.Host).
+	Set("path", r.URL.Path).
+	Set("raw_path", r.URL.RawPath).
+	Set("force_query", r.URL.ForceQuery).
+	Set("raw_query", r.URL.RawQuery).
+	Set("fragment", r.URL.Fragment).
+	Set("remote_addr", r.RemoteAddr).
+	Set("is_form_http","1")
 	for key, v := range r.Header {
-		//grpc的header key只能是小写，大写会报错
-		key = strings.ToLower(key)
-		md[key] = append(md[key], v...)
+		header.Set(key, v)
 	}
-
 	for key, v := range r.Trailer {
 		//grpc的header key只能是小写，大写会报错
-		key = strings.ToLower(key)
-		md[key] = append(md[key], v...)
+		header.Set(key, v)
 	}
 
-	fmt.Printf("\n\nsend header: %+v\n\n", md)
-
 	// 这里的header发送不过去，待解决
-	ctx:= context.Background()
-	ctx = metadata.NewOutgoingContext(ctx, md)
+	//ctx:= context.Background()
+	ctx := header.ClientContext()//metadata.NewOutgoingContext(ctx, md)
 	//这个参数用于接收grpc回传的header和trailer
 	var returnHeader  = metadata.MD{}
 	var returnTrailer = metadata.MD{}
@@ -257,6 +252,7 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	//ctx=context.WithValue(ctx, HttpHeader{}, md)
 	//err := grpc.Invoke(ctx, fullMethod, params, &out, conn.conn,  grpc.FailFast(false), opt1, opt2)
+	var out interface{}
 	err := conn.conn.Invoke(ctx, fullMethod, params, &out, opt1, opt2) //grpc.FailFast(false)
 	//grpc.SendHeader(ctx, md)
 	fmt.Printf("ctx: %+v\n\n", ctx)

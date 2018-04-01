@@ -5,6 +5,8 @@ import (
 	"strings"
 	"golang.org/x/net/context"
 	"strconv"
+	"google.golang.org/grpc"
+	"fmt"
 )
 
 type Header struct {
@@ -29,6 +31,7 @@ type Header struct {
 	headers  map[string]string
 	//trailers map[string]string
 	cookies  map[string] string
+	md metadata.MD
 }
 
 
@@ -47,7 +50,7 @@ func NewHeader(ctx context.Context) *Header{
 		ctx : ctx,
 		headers : make(map[string] string),
 		cookies : make(map[string] string),
-		//trailers: make(map[string] string),
+		md      : make(metadata.MD),
 	}
 	header.parse()
 	return header
@@ -69,7 +72,6 @@ func (h *Header) parse() {
 		if len(cookies) > 0 {
 			c := strings.Split(cookies[0], ";")
 			for _, iv := range c {
-				//log.Debugf("cookie==%s", iv)
 				iv = strings.Trim(iv, " ")
 				it := strings.Split(iv, "=")
 				if len(it) >= 2 {
@@ -119,4 +121,34 @@ func (h *Header) GetCookieInt64(key string) int64 {
 		return d
 	}
 	return 0
+}
+
+func (h *Header) GetHeaderInt64(key string) int64 {
+	v, ok := h.headers[strings.ToLower(key)]
+	if ok {
+		d, err := strconv.ParseInt(v, 10, 64)
+		if err != nil {
+			return 0
+		}
+		return d
+	}
+	return 0
+}
+
+// key、value 只能是数字或者字符串
+func (h *Header) Set(key interface{}, value ...interface{}) *Header {
+	//grpc的header的key必须为小写
+	skey := strings.ToLower(fmt.Sprintf("%v", key))
+	for _, v:= range value {
+		h.md[skey] = append(h.md[skey], fmt.Sprintf("%v", v))
+	}
+	return h
+}
+//server端发送header
+func (h *Header) ServerSend() {
+	grpc.SendHeader(h.ctx, h.md)
+}
+// client端是通过context发送header的
+func (h *Header) ClientContext() context.Context {
+	return metadata.NewOutgoingContext(h.ctx, h.md)
 }

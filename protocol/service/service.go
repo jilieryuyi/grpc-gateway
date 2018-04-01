@@ -8,8 +8,6 @@ import (
 	"github.com/go-kit/kit/metrics"
 	"github.com/jilieryuyi/grpc-gateway/tools"
 	"fmt"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc"
 )
 
 // Service describes a service that adds things together.
@@ -57,10 +55,9 @@ const (
 )
 
 func (s basicService) Sum(ctx context.Context, a, b int) (int, error) {
-	fmt.Printf("call Sum\n\n")
 	h := tools.NewHeader(ctx)
-	fmt.Printf("============%+v\n",ctx)
-	fmt.Printf("\n\n===========basicService header: %+v\n\n", *h)
+	fmt.Printf("headers: %+v\n", h.GetHeaders())
+	fmt.Printf("cookies: %+v\n", h.GetCookies())
 
 	if a == 0 && b == 0 {
 		return 0, ErrTwoZeroes
@@ -68,10 +65,11 @@ func (s basicService) Sum(ctx context.Context, a, b int) (int, error) {
 	if (b > 0 && a > (intMax-b)) || (b < 0 && a < (intMin-b)) {
 		return 0, ErrIntOverflow
 	}
-	md := metadata.MD{}
-	md["hello"] = []string{"client"}
-	grpc.SendHeader(ctx, md)
 
+	//send headers
+	h.Set("hello", "world").
+		Set("server", "service.add").
+		ServerSend()
 	return a + b, nil
 }
 

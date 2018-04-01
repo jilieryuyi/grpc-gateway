@@ -13,7 +13,7 @@ import (
 	"os"
 	"google.golang.org/grpc"
 	"github.com/jilieryuyi/grpc-gateway/proto"
-	"google.golang.org/grpc/metadata"
+	"github.com/jilieryuyi/grpc-gateway/tools"
 )
 
 func main() {
@@ -30,9 +30,9 @@ func main() {
 		B:"100",
 	}
 
-	md := metadata.MD{}
-	md["hahahahahah"]= []string{"hahahahahah"}
-	ctx := metadata.NewOutgoingContext(context.Background(), md)
+	h := tools.NewHeader(context.Background())
+	// client端发送header是通过context发送的
+	ctx := h.Set("server", "grpc-client").ClientContext()
 	v, err := svc.Sum(ctx, req, grpc.FailFast(false))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: %v\n", err)
