@@ -271,24 +271,14 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("\n\nsend header: %+v\n\n", md)
 
-	//header := grpc.Header(&md)
-
-	//trailerData := metadata.MD{}
-	//for key, v := range r.Trailer {
-	//	trailerData[key] = append(trailerData[key], v...)
-	//}
-	//trailerData["trailer_test"] = []string{"1"}
-	//trailer := grpc.Trailer(&trailerData)
-	//fmt.Printf("\n\nsend trailer: %+v\n\n", trailerData)
-
 	// 这里的header发送不过去，待解决
 	ctx:= context.Background()
 	ctx = metadata.NewOutgoingContext(ctx, md)
 	//这个参数用于接收grpc回传的header和trailer
-	var mdoh = metadata.MD{}
-	var mdot = metadata.MD{}
-	opt1 := grpc.Header(&mdoh)
-	opt2 := grpc.Trailer(&mdot)
+	var returnHeader  = metadata.MD{}
+	var returnTrailer = metadata.MD{}
+	opt1 := grpc.Header(&returnHeader)
+	opt2 := grpc.Trailer(&returnTrailer)
 
 	//ctx=context.WithValue(ctx, HttpHeader{}, md)
 	//err := grpc.Invoke(ctx, fullMethod, params, &out, conn.conn,  grpc.FailFast(false), opt1, opt2)
@@ -296,14 +286,26 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	//grpc.SendHeader(ctx, md)
 	fmt.Printf("ctx: %+v\n\n", ctx)
 	fmt.Printf("return: %+v, error: %+v\n", out, err)
-	fmt.Printf("out header: %+v\n", mdoh)
-	fmt.Printf("out trailer: %+v\n", mdot)
-	for k, v := range mdoh {
+	fmt.Printf("out header: %+v\n", returnHeader)
+	fmt.Printf("out trailer: %+v\n", returnTrailer)
+	for k, v := range returnHeader {
 		if len(v) > 0 {
 			for _, sv := range v {
 				fmt.Printf("set header: %v=%v\n", k, sv)
-				w.Header().Set(k, sv)
+				w.Header().Add(k, sv)
 			}
+		} else {
+			w.Header().Set(k, "")
+		}
+	}
+	for k, v := range returnTrailer {
+		if len(v) > 0 {
+			for _, sv := range v {
+				fmt.Printf("set header: %v=%v\n", k, sv)
+				w.Header().Add(k, sv)
+			}
+		} else {
+			w.Header().Set(k, "")
 		}
 	}
 	w.Header().Set("Content-Type", "text/html")
