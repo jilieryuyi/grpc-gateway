@@ -263,6 +263,12 @@ func (p *MyMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		md[key] = append(md[key], v...)
 	}
 
+	for key, v := range r.Trailer {
+		//grpc的header key只能是小写，大写会报错
+		key = strings.ToLower(key)
+		md[key] = append(md[key], v...)
+	}
+
 	fmt.Printf("\n\nsend header: %+v\n\n", md)
 
 	//header := grpc.Header(&md)

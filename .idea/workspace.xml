@@ -3,17 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="36284916-c978-43a6-bd60-8522ac4cd089" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/gateway/bin/gateway" afterPath="$PROJECT_DIR$/gateway/bin/gateway" />
-      <change beforePath="$PROJECT_DIR$/gateway/gateway" afterPath="$PROJECT_DIR$/gateway/gateway" />
-      <change beforePath="$PROJECT_DIR$/gateway/pkg/darwin_amd64/proxy.a" afterPath="$PROJECT_DIR$/gateway/pkg/darwin_amd64/proxy.a" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/gateway/gateway.go" afterPath="$PROJECT_DIR$/gateway/src/gateway/gateway.go" />
       <change beforePath="$PROJECT_DIR$/gateway/src/proxy/http.go" afterPath="$PROJECT_DIR$/gateway/src/proxy/http.go" />
-      <change beforePath="$PROJECT_DIR$/grpc_client/client.go" afterPath="$PROJECT_DIR$/grpc_client/client.go" />
-      <change beforePath="$PROJECT_DIR$/proto/client.go" afterPath="$PROJECT_DIR$/proto/client.go" />
-      <change beforePath="$PROJECT_DIR$/services/add/add" afterPath="$PROJECT_DIR$/services/add/add" />
-      <change beforePath="$PROJECT_DIR$/services/add/bin/add" afterPath="$PROJECT_DIR$/services/add/bin/add" />
-      <change beforePath="$PROJECT_DIR$/tools/consul/consul-server.pid" afterPath="$PROJECT_DIR$/tools/consul/consul-server.pid" />
-      <change beforePath="$PROJECT_DIR$/tools/consul/nohup.out" afterPath="$PROJECT_DIR$/tools/consul/nohup.out" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,8 +27,8 @@
       <file leaf-file-name="http.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gateway/src/proxy/http.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-663">
-              <caret line="265" column="23" lean-forward="false" selection-start-line="265" selection-start-column="23" selection-end-line="265" selection-end-column="23" />
+            <state relative-caret-position="336">
+              <caret line="265" column="33" lean-forward="false" selection-start-line="265" selection-start-column="33" selection-end-line="265" selection-end-column="33" />
               <folding>
                 <element signature="e#15#328#0" expanded="true" />
               </folding>
@@ -484,7 +474,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19054878" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16768293" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -650,6 +640,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="178">
           <caret line="184" column="4" lean-forward="false" selection-start-line="184" selection-start-column="4" selection-end-line="184" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -930,8 +921,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gateway/src/proxy/http.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-663">
-          <caret line="265" column="23" lean-forward="false" selection-start-line="265" selection-start-column="23" selection-end-line="265" selection-end-column="23" />
+        <state relative-caret-position="336">
+          <caret line="265" column="33" lean-forward="false" selection-start-line="265" selection-start-column="33" selection-end-line="265" selection-end-column="33" />
           <folding>
             <element signature="e#15#328#0" expanded="true" />
           </folding>
