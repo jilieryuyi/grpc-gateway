@@ -1,5 +1,6 @@
 pkg/*
 vendor/pkg/*
-.idea/
+.idea/*
 bin/logs/*
 /tools/*/*.out
+tools/consul/nohup.out
